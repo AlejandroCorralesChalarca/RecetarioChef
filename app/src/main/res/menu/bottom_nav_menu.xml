@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_dashboard"
+        android:icon="@drawable/ic_dashboard"
+        android:title="Inicio" />
+
+    <item
+        android:id="@+id/navigation_pedidos"
+        android:icon="@drawable/ic_pedidos"
+        android:title="Pedidos" />
+
+    <item
+        android:id="@+id/navigation_inventario"
+        android:icon="@drawable/ic_inventario"
+        android:title="Inventario" />
+
+    <item
+        android:id="@+id/navigation_recetas"
+        android:icon="@drawable/ic_recetas"
+        android:title="Recetas" />
+
+</menu>

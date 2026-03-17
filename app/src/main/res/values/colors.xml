@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Colores principales -->
+    <color name="naranja_pastel">#FFAB76</color>
+    <color name="naranja_pastel_dark">#F08030</color>
+    <color name="naranja_claro">#FFE0C8</color>
+    <color name="blanco">#FFFFFF</color>
+    <color name="gris_texto">#5A5A5A</color>
+    <color name="gris_suave">#F5F5F5</color>
+    <color name="gris_borde">#E0E0E0</color>
+
+    <!-- Requeridos por Android -->
+    <color name="purple_200">#FFAB76</color>
+    <color name="purple_500">#FFAB76</color>
+    <color name="purple_700">#F08030</color>
+    <color name="teal_200">#FFAB76</color>
+    <color name="teal_700">#F08030</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+</resources>
