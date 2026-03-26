@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="32dp">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            android:gravity="center_vertical">
+            <TextView
+                android:id="@+id/btn_volver"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="← Volver a recetas"
+                android:textColor="@color/gris_texto"
+                android:textSize="14sp"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="8dp"/>
+        </LinearLayout>
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:layout_marginHorizontal="16dp"
+            app:cardCornerRadius="16dp">
+            <ImageView
+                android:id="@+id/img_detalle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/bg_chip_selected" />
+        </androidx.cardview.widget.CardView>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <TextView
+                android:id="@+id/txt_categoria_detalle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Italiana"
+                android:background="@drawable/bg_chip_unselected"
+                android:backgroundTint="#FFF8E1"
+                android:textColor="#FFB300"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="4dp"
+                android:textSize="12sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/txt_nombre_detalle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pasta Carbonara"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:textColor="#1A237E"
+                android:layout_marginTop="8dp"/>
+
+            <TextView
+                android:id="@+id/txt_desc_detalle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Clásica pasta italiana con salsa cremosa de huevo y panceta"
+                android:textSize="14sp"
+                android:textColor="@color/gris_texto"
+                android:layout_marginTop="8dp"/>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp"
+                android:gravity="center">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_marginHorizontal="20dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="⏱" android:textSize="18sp"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Tiempo" android:textSize="10sp" android:textColor="@color/gris_texto"/>
+                    <TextView android:id="@+id/txt_tiempo_info" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="20 min" android:textStyle="bold" android:textSize="13sp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_marginHorizontal="20dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="$" android:textSize="18sp"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Precio" android:textSize="10sp" android:textColor="@color/gris_texto"/>
+                    <TextView android:id="@+id/txt_precio_info" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="$ 14.500" android:textStyle="bold" android:textSize="13sp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_marginHorizontal="20dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🍳" android:textSize="18sp"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Ingredientes" android:textSize="10sp" android:textColor="@color/gris_texto"/>
+                    <TextView android:id="@+id/txt_ingredientes_info" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="5" android:textStyle="bold" android:textSize="13sp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ingredientes"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#1A237E"
+                android:layout_marginTop="32dp"/>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:cardCornerRadius="16dp"
+                app:cardBackgroundColor="#F8F9FB"
+                app:cardElevation="0dp">
+                <LinearLayout
+                    android:id="@+id/container_ingredientes_lista"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp" />
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Preparación"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#1A237E"
+                android:layout_marginTop="32dp"/>
+
+            <LinearLayout
+                android:id="@+id/container_pasos_lista"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="16dp" />
+
+        </LinearLayout>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

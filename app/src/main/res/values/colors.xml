@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary_orange">#F05A28</color>
+    <color name="primary_orange_dark">#D84315</color>
+    <color name="primary_orange_light">#FFF3E0</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="background_gray">#F8F9FA</color>
+    <color name="text_dark">#1A1C1E</color>
+    <color name="text_gray">#6C757D</color>
+    <color name="divider_gray">#E9ECEF</color>
+    <color name="gris_borde">#E0E0E0</color>
+
+    <color name="status_pending">#FFC107</color>
+    <color name="status_cooking">#007BFF</color>
+    <color name="status_ready">#28A745</color>
+
+    <color name="card_blue">#E3F2FD</color>
+    <color name="card_green">#E8F5E9</color>
+    <color name="card_orange">#FFF3E0</color>
+    <color name="card_purple">#F3E5F5</color>
+
+    <color name="transparente_oscuro">#99000000</color>
+
+    <!-- Aliases for compatibility -->
+    <color name="naranja_pastel">#F05A28</color>
+    <color name="naranja_pastel_dark">#D84315</color>
+    <color name="naranja_claro">#FFF3E0</color>
+    <color name="blanco">#FFFFFF</color>
+    <color name="gris_texto">#6C757D</color>
+    <color name="azul_accion">#007BFF</color>
+    <color name="verde_accion">#28A745</color>
+</resources>

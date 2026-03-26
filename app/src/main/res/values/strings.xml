@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">ChefApp</string>
+    <string name="title_home">Inicio</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_recetas">Recetas</string>
+    <string name="title_pedidos">Pedidos</string>
+    <string name="title_inventario">Inventario</string>
+    <string name="title_perfil">Perfil</string>
+</resources>

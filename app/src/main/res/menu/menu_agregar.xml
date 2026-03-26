@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_add_receta"
+        android:title="Nueva Receta"
+        android:icon="@drawable/ic_recetas" />
+    <item
+        android:id="@+id/action_add_inventario"
+        android:title="Nuevo Inventario"
+        android:icon="@drawable/ic_inventario" />
+    <item
+        android:id="@+id/action_add_pedido"
+        android:title="Nuevo Pedido"
+        android:icon="@drawable/ic_pedidos" />
+</menu>
