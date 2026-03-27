@@ -40,17 +40,18 @@
         android:background="@color/transparente_oscuro"
         android:clickable="true"
         android:focusable="true"
-        android:visibility="gone">
+        android:visibility="gone"
+        android:elevation="12dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="120dp"
-            android:gravity="center"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="100dp"
+            android:gravity="end"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintEnd_toEndOf="parent">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_nuevo_pedido"
@@ -94,13 +95,14 @@
         android:id="@+id/fab_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="80dp"
         android:contentDescription="Agregar"
         android:src="@android:drawable/ic_input_add"
         app:backgroundTint="@color/primary_orange"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:tint="@color/white" />
+        app:tint="@color/white"
+        android:elevation="13dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

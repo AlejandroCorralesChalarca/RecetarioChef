@@ -10,7 +10,9 @@ import kotlinx.coroutines.flow.update
 data class RecetasUiState(
     val recetas: List<Receta> = emptyList(),
     val isLoading: Boolean = false,
-    val error: String? = null
+    val currentQuery: String = "",
+    val currentCategory: String = "Todas",
+    val selectedReceta: Receta? = null
 )
 
 class RecetasViewModel : ViewModel() {
@@ -19,7 +21,7 @@ class RecetasViewModel : ViewModel() {
         Receta(
             1, "Pasta Carbonara", 
             "Clásica pasta italiana con salsa cremosa de huevo y panceta", 
-            "20 min", "14.500", "Italiana", 5,
+            "20 min", "14500", "Italiana", 5,
             listOf(
                 "Pasta Spaghetti" to "0.12 kg",
                 "Queso Parmesano" to "0.05 kg",
@@ -41,7 +43,7 @@ class RecetasViewModel : ViewModel() {
         Receta(
             2, "Risotto de Hongos", 
             "Arroz cremoso con variedad de hongos silvestres y parmesano", 
-            "35 min", "16.000", "Italiana", 6,
+            "35 min", "16000", "Italiana", 6,
             listOf(
                 "Arroz Arborio" to "0.1 kg",
                 "Hongos Mixtos" to "0.15 kg",
@@ -62,7 +64,7 @@ class RecetasViewModel : ViewModel() {
         Receta(
             3, "Pollo al Limón",
             "Pechuga de pollo jugosa con salsa de limón y hierbas",
-            "25 min", "15.500", "Aves", 4,
+            "25 min", "15500", "Aves", 4,
             listOf(
                 "Pechuga de Pollo" to "0.2 kg",
                 "Limón" to "1 unidad",
@@ -80,7 +82,7 @@ class RecetasViewModel : ViewModel() {
         Receta(
             4, "Tiramisú Clásico",
             "Postre italiano de café, bizcochos y crema de mascarpone",
-            "15 min", "7.500", "Postres", 5,
+            "15 min", "7500", "Postres", 5,
             listOf(
                 "Queso Mascarpone" to "0.25 kg",
                 "Café Espresso" to "0.1 L",
@@ -102,34 +104,38 @@ class RecetasViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(RecetasUiState())
     val uiState: StateFlow<RecetasUiState> = _uiState.asStateFlow()
 
-    private var currentQuery = ""
-    private var currentCategory = "Todas"
-
     init {
         aplicarFiltros()
     }
 
     fun buscar(query: String) {
-        currentQuery = query
+        if (_uiState.value.currentQuery == query) return
+        _uiState.update { it.copy(currentQuery = query) }
         aplicarFiltros()
     }
 
     fun filtrarPorCategoria(categoria: String) {
-        currentCategory = categoria
+        if (_uiState.value.currentCategory == categoria) return
+        _uiState.update { it.copy(currentCategory = categoria) }
         aplicarFiltros()
     }
 
+    fun seleccionarReceta(receta: Receta?) {
+        _uiState.update { it.copy(selectedReceta = receta) }
+    }
+
     private fun aplicarFiltros() {
+        val state = _uiState.value
         var filtradas = recetasOriginales
 
-        if (currentCategory != "Todas") {
-            filtradas = filtradas.filter { it.categoria == currentCategory }
+        if (state.currentCategory != "Todas") {
+            filtradas = filtradas.filter { it.categoria == state.currentCategory }
         }
 
-        if (currentQuery.isNotEmpty()) {
+        if (state.currentQuery.isNotEmpty()) {
             filtradas = filtradas.filter { receta ->
-                receta.nombre.contains(currentQuery, ignoreCase = true) ||
-                        receta.descripcion.contains(currentQuery, ignoreCase = true)
+                receta.nombre.contains(state.currentQuery, ignoreCase = true) ||
+                        receta.descripcion.contains(state.currentQuery, ignoreCase = true)
             }
         }
 

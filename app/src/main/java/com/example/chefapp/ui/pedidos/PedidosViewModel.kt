@@ -10,76 +10,81 @@ import kotlinx.coroutines.flow.update
 
 data class PedidosUiState(
     val pedidos: List<Pedido> = emptyList(),
-    val isLoading: Boolean = false
+    val isLoading: Boolean = false,
+    val currentQuery: String = "",
+    val currentEstado: String = "Todos"
 )
 
 class PedidosViewModel : ViewModel() {
 
-    private val pedidosOriginales = listOf(
+    // Fuente de verdad mutable para que los cambios de estado persistan
+    private var pedidosOriginales = mutableListOf(
         Pedido(
-            "P004", "Mesa 3", "Hace 35 min", 45.50, "Pendiente",
+            "P004", "Mesa 3", "Hace 35 min", 45500.0, "Pendiente",
             listOf(
-                ItemPedido(1, "Pasta Carbonara", 14.50),
-                ItemPedido(2, "Pollo al Limón", 31.00, "Nota: Poco cocido")
+                ItemPedido(1, "Pasta Carbonara", 14500.0),
+                ItemPedido(2, "Pollo al Limón", 31000.0, "Nota: Poco cocido")
             )
         ),
         Pedido(
-            "P002", "Mesa 12", "Hace 38 min", 31.50, "Pendiente",
+            "P002", "Mesa 12", "Hace 38 min", 31500.0, "Pendiente",
             listOf(
-                ItemPedido(1, "Risotto de Setas", 16.00),
-                ItemPedido(1, "Pollo al Limón", 15.50)
+                ItemPedido(1, "Risotto de Setas", 16000.0),
+                ItemPedido(1, "Pollo al Limón", 15500.0)
             )
         ),
         Pedido(
-            "P005", "Mesa 15", "Hace 43 min", 35.00, "En Preparación",
+            "P005", "Mesa 15", "Hace 43 min", 35000.0, "En Preparación",
             listOf(
-                ItemPedido(2, "Ensalada César", 24.00),
-                ItemPedido(1, "Pasta Pomodoro", 11.00)
+                ItemPedido(2, "Ensalada César", 24000.0),
+                ItemPedido(1, "Pasta Pomodoro", 11000.0)
             )
         ),
         Pedido(
-            "P001", "Mesa 5", "Hace 48 min", 41.00, "En Preparación",
+            "P001", "Mesa 5", "Hace 48 min", 41000.0, "En Preparación",
             listOf(
-                ItemPedido(2, "Pasta Carbonara", 29.00),
-                ItemPedido(1, "Ensalada César", 12.00, "Nota: Sin anchoas")
+                ItemPedido(2, "Pasta Carbonara", 29000.0),
+                ItemPedido(1, "Ensalada César", 12000.0, "Nota: Sin anchoas")
             )
         ),
         Pedido(
-            "P003", "Mesa 8", "Hace 58 min", 69.00, "Listo",
+            "P003", "Mesa 8", "Hace 58 min", 69000.0, "Listo",
             listOf(
-                ItemPedido(3, "Pasta Pomodoro", 33.00),
-                ItemPedido(2, "Paella Valenciana", 36.00)
+                ItemPedido(3, "Pasta Pomodoro", 33000.0),
+                ItemPedido(2, "Paella Valenciana", 36000.0)
             )
         )
     )
 
-    private val _uiState = MutableStateFlow(PedidosUiState(pedidos = pedidosOriginales))
+    private val _uiState = MutableStateFlow(PedidosUiState())
     val uiState: StateFlow<PedidosUiState> = _uiState.asStateFlow()
 
-    private var currentQuery = ""
-    private var currentEstado = "Todos"
+    init {
+        aplicarFiltros()
+    }
 
     fun buscar(query: String) {
-        currentQuery = query
+        _uiState.update { it.copy(currentQuery = query) }
         aplicarFiltros()
     }
 
     fun filtrarPorEstado(estado: String) {
-        currentEstado = estado
+        _uiState.update { it.copy(currentEstado = estado) }
         aplicarFiltros()
     }
 
     private fun aplicarFiltros() {
-        var filtrados = pedidosOriginales
+        val state = _uiState.value
+        var filtrados = pedidosOriginales.toList()
 
-        if (currentEstado != "Todos") {
-            filtrados = filtrados.filter { it.estado == currentEstado }
+        if (state.currentEstado != "Todos") {
+            filtrados = filtrados.filter { it.estado == state.currentEstado }
         }
 
-        if (currentQuery.isNotEmpty()) {
+        if (state.currentQuery.isNotEmpty()) {
             filtrados = filtrados.filter { pedido ->
-                pedido.mesa.contains(currentQuery, ignoreCase = true) ||
-                        pedido.id.contains(currentQuery, ignoreCase = true)
+                pedido.mesa.contains(state.currentQuery, ignoreCase = true) ||
+                        pedido.id.contains(state.currentQuery, ignoreCase = true)
             }
         }
 
@@ -87,8 +92,6 @@ class PedidosViewModel : ViewModel() {
     }
 
     fun cambiarEstadoPedido(pedido: Pedido) {
-        _uiState.update { it.copy(isLoading = true) }
-        
         val nuevoEstado = when (pedido.estado) {
             "Pendiente" -> "En Preparación"
             "En Preparación" -> "Listo"
@@ -96,17 +99,16 @@ class PedidosViewModel : ViewModel() {
             else -> pedido.estado
         }
         
-        val listaActualizada = _uiState.value.pedidos.toMutableList()
-        val index = listaActualizada.indexOfFirst { it.id == pedido.id }
+        // Actualizamos la fuente de verdad (lista original)
+        val index = pedidosOriginales.indexOfFirst { it.id == pedido.id }
         if (index != -1) {
             if (nuevoEstado == "Entregado") {
-                listaActualizada.removeAt(index)
+                pedidosOriginales.removeAt(index)
             } else {
-                listaActualizada[index] = pedido.copy(estado = nuevoEstado)
+                pedidosOriginales[index] = pedido.copy(estado = nuevoEstado)
             }
-            _uiState.update { it.copy(pedidos = listaActualizada, isLoading = false) }
-        } else {
-            _uiState.update { it.copy(isLoading = false) }
+            // Re-aplicamos filtros para que la UI se actualice con la lista modificada
+            aplicarFiltros()
         }
     }
 }

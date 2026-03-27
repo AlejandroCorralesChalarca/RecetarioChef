@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private val viewModel: MainViewModel by viewModels()
+    private var currentDialog: AlertDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,24 +49,15 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btnNuevaReceta.setOnClickListener {
-            if (binding.btnNuevaReceta.isEnabled) {
-                viewModel.hideFabMenu()
-                mostrarDialogoNuevaReceta()
-            }
+            viewModel.showDialog(DialogType.NUEVA_RECETA)
         }
 
         binding.btnNuevoProducto.setOnClickListener {
-            if (binding.btnNuevoProducto.isEnabled) {
-                viewModel.hideFabMenu()
-                mostrarDialogoNuevoProducto()
-            }
+            viewModel.showDialog(DialogType.NUEVO_PRODUCTO)
         }
 
         binding.btnNuevoPedido.setOnClickListener {
-            if (binding.btnNuevoPedido.isEnabled) {
-                viewModel.hideFabMenu()
-                mostrarDialogoNuevoPedido()
-            }
+            viewModel.showDialog(DialogType.NUEVO_PEDIDO)
         }
     }
 
@@ -91,6 +83,20 @@ class MainActivity : AppCompatActivity() {
         binding.btnNuevoProducto.isEnabled = enabled
         binding.btnNuevoPedido.isEnabled = enabled
         binding.fabAdd.isEnabled = enabled
+
+        // Manejar Diálogos (Persistencia en rotación)
+        if (state.activeDialog != null) {
+            if (currentDialog == null || !currentDialog!!.isShowing) {
+                when(state.activeDialog) {
+                    DialogType.NUEVA_RECETA -> mostrarDialogoNuevaReceta()
+                    DialogType.NUEVO_PRODUCTO -> mostrarDialogoNuevoProducto()
+                    DialogType.NUEVO_PEDIDO -> mostrarDialogoNuevoPedido()
+                }
+            }
+        } else {
+            currentDialog?.dismiss()
+            currentDialog = null
+        }
     }
 
     private fun mostrarMenuFab() {
@@ -109,11 +115,17 @@ class MainActivity : AppCompatActivity() {
             val width = (resources.displayMetrics.widthPixels * 0.95).toInt()
             window.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
         }
+        dialog.setOnDismissListener { 
+            if (viewModel.uiState.value.activeDialog != null) {
+                viewModel.dismissDialog()
+            }
+        }
     }
 
     private fun mostrarDialogoNuevaReceta() {
         val view = layoutInflater.inflate(R.layout.dialog_nueva_receta, null)
         val dialog = AlertDialog.Builder(this, R.style.CustomDialogTheme).setView(view).create()
+        currentDialog = dialog
         dialog.show()
         configurarVentanaDialogo(dialog)
         
@@ -121,8 +133,6 @@ class MainActivity : AppCompatActivity() {
         view.findViewById<Button>(R.id.btn_cancel).setOnClickListener { dialog.dismiss() }
         view.findViewById<Button>(R.id.btn_save).setOnClickListener {
             viewModel.setActionInProgress(true)
-            Toast.makeText(this, "Guardando receta...", Toast.LENGTH_SHORT).show()
-            
             binding.root.postDelayed({
                 viewModel.setActionInProgress(false)
                 Toast.makeText(this, "Receta guardada", Toast.LENGTH_SHORT).show()
@@ -134,6 +144,7 @@ class MainActivity : AppCompatActivity() {
     private fun mostrarDialogoNuevoProducto() {
         val view = layoutInflater.inflate(R.layout.dialog_nuevo_producto, null)
         val dialog = AlertDialog.Builder(this, R.style.CustomDialogTheme).setView(view).create()
+        currentDialog = dialog
         dialog.show()
         configurarVentanaDialogo(dialog)
         
@@ -152,6 +163,7 @@ class MainActivity : AppCompatActivity() {
     private fun mostrarDialogoNuevoPedido() {
         val view = layoutInflater.inflate(R.layout.dialog_nuevo_pedido, null)
         val dialog = AlertDialog.Builder(this, R.style.CustomDialogTheme).setView(view).create()
+        currentDialog = dialog
         dialog.show()
         configurarVentanaDialogo(dialog)
         
