@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/background_gray">
 
-
+    <!-- Header -->
     <LinearLayout
         android:id="@+id/header_pedidos"
         android:layout_width="match_parent"
@@ -71,7 +71,7 @@
                 android:textColor="@color/text_gray"
                 android:textSize="14sp" />
 
-
+            <!-- Buscador y Filtros -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -148,7 +148,7 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-
+            <!-- Lista de Pedidos -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_pedidos"
                 android:layout_width="match_parent"

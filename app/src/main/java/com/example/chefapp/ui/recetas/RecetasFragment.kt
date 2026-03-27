@@ -74,7 +74,6 @@ class RecetasFragment : Fragment() {
     }
 
     private fun setupObservers() {
-
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { state ->
@@ -85,9 +84,7 @@ class RecetasFragment : Fragment() {
     }
 
     private fun actualizarUI(state: RecetasUiState) {
-
         adapter.updateList(state.recetas)
-
         binding.editBuscarReceta.isEnabled = !state.isLoading
     }
 

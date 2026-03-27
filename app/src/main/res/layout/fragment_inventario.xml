@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/background_gray">
 
-
+    <!-- Header -->
     <LinearLayout
         android:id="@+id/header_inventario"
         android:layout_width="match_parent"
@@ -71,6 +71,7 @@
                 android:textColor="@color/text_gray"
                 android:textSize="14sp" />
 
+            <!-- Alerta de Stock Bajo -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/card_alerta_stock"
                 android:layout_width="match_parent"
@@ -118,7 +119,7 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-
+            <!-- Buscador y Filtros -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -195,6 +196,7 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
+            <!-- Lista de Productos -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_inventario"
                 android:layout_width="match_parent"

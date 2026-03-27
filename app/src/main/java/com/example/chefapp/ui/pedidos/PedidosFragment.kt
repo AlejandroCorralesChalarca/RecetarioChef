@@ -68,7 +68,6 @@ class PedidosFragment : Fragment() {
     }
 
     private fun setupObservers() {
-
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { state ->
@@ -79,9 +78,7 @@ class PedidosFragment : Fragment() {
     }
 
     private fun actualizarUI(state: PedidosUiState) {
-
         adapter.updateList(state.pedidos)
-
         binding.editBuscarPedido.isEnabled = !state.isLoading
     }
 

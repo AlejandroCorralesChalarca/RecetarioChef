@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-
 data class InventarioUiState(
     val productos: List<Producto> = emptyList(),
     val resumenAlertas: String = "Todos los niveles de stock están correctos.",

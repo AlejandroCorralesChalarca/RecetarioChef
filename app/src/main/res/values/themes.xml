@@ -2,15 +2,15 @@
     <!-- Base application theme. -->
     <style name="Theme.ChefApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/naranja_pastel_dark</item>
-        <item name="colorPrimaryVariant">@color/naranja_pastel_dark</item>
+        <item name="colorPrimary">@color/primary_orange</item>
+        <item name="colorPrimaryVariant">@color/primary_orange_dark</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/naranja_pastel</item>
-        <item name="colorSecondaryVariant">@color/naranja_pastel_dark</item>
+        <item name="colorSecondary">@color/primary_orange</item>
+        <item name="colorSecondaryVariant">@color/primary_orange_dark</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">@color/naranja_pastel_dark</item>
+        <item name="android:statusBarColor">@color/primary_orange_dark</item>
     </style>
 
     <style name="CustomDialogTheme" parent="Theme.MaterialComponents.Light.Dialog">

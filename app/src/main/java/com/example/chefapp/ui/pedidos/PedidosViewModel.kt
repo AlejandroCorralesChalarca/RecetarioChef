@@ -8,7 +8,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-
 data class PedidosUiState(
     val pedidos: List<Pedido> = emptyList(),
     val isLoading: Boolean = false

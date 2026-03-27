@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:paddingBottom="80dp">
 
-
+        <!-- Header -->
         <LinearLayout
             android:id="@+id/header_dashboard"
             android:layout_width="match_parent"
@@ -67,7 +67,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_dashboard_title" />
 
-
+        <!-- Recetas Destacadas Header -->
         <RelativeLayout
             android:id="@+id/rl_destacadas"
             android:layout_width="match_parent"
@@ -93,7 +93,7 @@
                 android:textSize="12sp" />
         </RelativeLayout>
 
-
+        <!-- Featured Recipes Carousel -->
         <androidx.cardview.widget.CardView
             android:id="@+id/carousel_card"
             android:layout_width="match_parent"
@@ -203,7 +203,7 @@
             </FrameLayout>
         </androidx.cardview.widget.CardView>
 
-
+        <!-- Resumen del día -->
         <TextView
             android:id="@+id/tv_resumen_title"
             android:layout_width="wrap_content"
@@ -270,7 +270,7 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-
+            <!-- Completados -->
             <androidx.cardview.widget.CardView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -314,6 +314,7 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
+            <!-- En Proceso -->
             <androidx.cardview.widget.CardView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -357,6 +358,7 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
+            <!-- Ingresos -->
             <androidx.cardview.widget.CardView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -402,7 +404,7 @@
 
         </GridLayout>
 
-
+        <!-- Pedidos de la semana -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -423,7 +425,7 @@
                     android:textColor="@color/text_dark"
                     android:textStyle="bold"/>
 
-
+                <!-- Chart Area -->
                 <com.github.mikephil.charting.charts.LineChart
                     android:id="@+id/chart_pedidos"
                     android:layout_width="match_parent"

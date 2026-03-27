@@ -5,7 +5,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-
 data class DashboardUiState(
     val totalPedidos: Int = 0,
     val completados: Int = 0,
@@ -20,7 +19,6 @@ class DashboardViewModel : ViewModel() {
     val uiState: StateFlow<DashboardUiState> = _uiState.asStateFlow()
 
     init {
-
         _uiState.value = DashboardUiState(
             totalPedidos = 23,
             completados = 18,

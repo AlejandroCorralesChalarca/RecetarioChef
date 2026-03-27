@@ -31,4 +31,11 @@
     <color name="gris_texto">#6C757D</color>
     <color name="azul_accion">#007BFF</color>
     <color name="verde_accion">#28A745</color>
+
+    <color name="gris_suave">#F5F5F5</color>
+    <color name="purple_200">#FFAB76</color>
+    <color name="purple_500">#FFAB76</color>
+    <color name="purple_700">#F08030</color>
+    <color name="teal_200">#FFAB76</color>
+    <color name="teal_700">#F08030</color>
 </resources>

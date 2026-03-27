@@ -48,7 +48,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btnNuevaReceta.setOnClickListener {
-
             if (binding.btnNuevaReceta.isEnabled) {
                 viewModel.hideFabMenu()
                 mostrarDialogoNuevaReceta()
@@ -71,7 +70,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupObservers() {
-
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { state ->
@@ -82,7 +80,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun actualizarUI(state: MainUiState) {
-
         if (state.isFabMenuVisible) {
             mostrarMenuFab()
         } else {
@@ -126,7 +123,6 @@ class MainActivity : AppCompatActivity() {
             viewModel.setActionInProgress(true)
             Toast.makeText(this, "Guardando receta...", Toast.LENGTH_SHORT).show()
             
-
             binding.root.postDelayed({
                 viewModel.setActionInProgress(false)
                 Toast.makeText(this, "Receta guardada", Toast.LENGTH_SHORT).show()
