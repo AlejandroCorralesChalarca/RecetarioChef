@@ -54,16 +54,28 @@
             app:layout_constraintEnd_toEndOf="parent">
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_nuevo_pedido"
+                android:id="@+id/btn_gestion_categorias"
                 android:layout_width="240dp"
                 android:layout_height="60dp"
                 android:layout_marginBottom="16dp"
-                android:backgroundTint="@color/verde_accion"
-                android:text="Nuevo Pedido"
+                android:backgroundTint="#9C27B0"
+                android:text="Gestionar Categorías"
                 android:textAllCaps="false"
                 android:textSize="16sp"
                 app:cornerRadius="30dp"
-                app:icon="@android:drawable/ic_menu_edit" />
+                app:icon="@android:drawable/ic_menu_agenda" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_nuevo_producto"
+                android:layout_width="240dp"
+                android:layout_height="60dp"
+                android:layout_marginBottom="16dp"
+                android:backgroundTint="@color/azul_accion"
+                android:text="Nuevo Producto"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                app:cornerRadius="30dp"
+                app:icon="@android:drawable/ic_input_add" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_nueva_receta"
@@ -78,15 +90,15 @@
                 app:icon="@android:drawable/ic_menu_add" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_nuevo_producto"
+                android:id="@+id/btn_nuevo_pedido"
                 android:layout_width="240dp"
                 android:layout_height="60dp"
-                android:backgroundTint="@color/azul_accion"
-                android:text="Nuevo Producto"
+                android:backgroundTint="@color/verde_accion"
+                android:text="Nuevo Pedido"
                 android:textAllCaps="false"
                 android:textSize="16sp"
                 app:cornerRadius="30dp"
-                app:icon="@android:drawable/ic_input_add" />
+                app:icon="@android:drawable/ic_menu_edit" />
 
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -98,7 +110,7 @@
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="80dp"
         android:contentDescription="Agregar"
-        android:src="@android:drawable/ic_input_add"
+        android:src="@android:drawable/ic_menu_add"
         app:backgroundTint="@color/primary_orange"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

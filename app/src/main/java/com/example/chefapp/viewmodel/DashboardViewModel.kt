@@ -1,4 +1,4 @@
-package com.example.chefapp.ui.dashboard
+package com.example.chefapp.viewmodel
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,6 +19,7 @@ class DashboardViewModel : ViewModel() {
     val uiState: StateFlow<DashboardUiState> = _uiState.asStateFlow()
 
     init {
+        // Datos de ejemplo para el Dashboard
         _uiState.value = DashboardUiState(
             totalPedidos = 23,
             completados = 18,

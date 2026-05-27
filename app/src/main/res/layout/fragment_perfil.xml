@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@color/background_gray">
 
-
     <LinearLayout
         android:id="@+id/header_perfil"
         android:layout_width="match_parent"
@@ -118,7 +117,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="12dp"
                         android:layout_marginEnd="16dp"
-                        android:text="Natalia"
+                        android:text="Nombre Usuario"
                         android:textColor="@color/text_dark"
                         android:textSize="22sp"
                         android:textStyle="bold"
@@ -131,7 +130,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="24dp"
-                        android:text="Cocina Italiana"
+                        android:text="Rol del Usuario"
                         android:textColor="@color/primary_orange"
                         android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -180,124 +179,29 @@
                             android:id="@+id/tv_perfil_email"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="natalia@restaurant.com"
+                            android:text="email@example.com"
                             android:textColor="@color/text_dark"
                             android:textSize="15sp"
                             android:textStyle="bold" />
                     </LinearLayout>
                 </LinearLayout>
 
-                <LinearLayout
+                <!-- Botón de Cerrar Sesión -->
+                <Button
+                    android:id="@+id/btn_cerrar_sesion"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:background="@drawable/bg_chip_gray_light"
-                    android:gravity="center_vertical"
-                    android:padding="16dp">
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@android:drawable/ic_menu_call"
-                        app:tint="@color/text_gray" />
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:orientation="vertical">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Teléfono"
-                            android:textColor="@color/text_gray"
-                            android:textSize="12sp" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="+34 612 345 678"
-                            android:textColor="@color/text_dark"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-                </LinearLayout>
+                    android:layout_height="60dp"
+                    android:layout_marginTop="32dp"
+                    android:text="Cerrar Sesión"
+                    android:textAllCaps="false"
+                    android:textColor="#FF5252"
+                    app:cornerRadius="12dp"
+                    app:strokeColor="#FF5252" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:background="@drawable/bg_chip_gray_light"
-                    android:gravity="center_vertical"
-                    android:padding="16dp">
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@android:drawable/ic_dialog_map"
-                        app:tint="@color/text_gray" />
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:orientation="vertical">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Dirección"
-                            android:textColor="@color/text_gray"
-                            android:textSize="12sp" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Calle Mayor 123, Madrid"
-                            android:textColor="@color/text_dark"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_chip_gray_light"
-                    android:gravity="center_vertical"
-                    android:padding="16dp">
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@android:drawable/btn_star_big_on"
-                        app:tint="@color/text_gray" />
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:orientation="vertical">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Experiencia"
-                            android:textColor="@color/text_gray"
-                            android:textSize="12sp" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="8 años"
-                            android:textColor="@color/text_dark"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-                </LinearLayout>
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_perfil_editar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="24dp"
-        android:src="@android:drawable/ic_input_add"
-        app:backgroundTint="@color/primary_orange"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:tint="@color/white" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

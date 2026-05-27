@@ -3,172 +3,189 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="16dp"
-    app:cardCornerRadius="24dp">
+    app:cardCornerRadius="24dp"
+    app:cardElevation="0dp">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="24dp">
+        android:fillViewport="true"
+        android:scrollbars="none">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp">
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp">
+
+                <TextView
+                    android:id="@+id/tv_dialog_title_prod"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nuevo Producto"
+                    android:textColor="@color/text_dark"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/btn_close_prod"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:padding="4dp"
+                    android:text="✕"
+                    android:textColor="@color/text_gray"
+                    android:textSize="22sp" />
+            </RelativeLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nuevo Producto"
+                android:layout_marginBottom="6dp"
+                android:text="Nombre del Ingrediente"
                 android:textColor="@color/text_dark"
-                android:textSize="20sp"
+                android:textSize="13sp"
                 android:textStyle="bold" />
 
+            <EditText
+                android:id="@+id/et_nombre_prod"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_edittext_rounded"
+                android:hint="Ej: Tomate"
+                android:paddingHorizontal="16dp"
+                android:textSize="15sp" />
+
             <TextView
-                android:id="@+id/btn_close_prod"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:padding="4dp"
-                android:text="✕"
-                android:textColor="@color/text_gray"
-                android:textSize="20sp" />
-        </RelativeLayout>
+                android:layout_marginBottom="6dp"
+                android:text="Categoría"
+                android:textColor="@color/text_dark"
+                android:textSize="13sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:text="Nombre del Ingrediente"
-            android:textColor="@color/text_dark"
-            android:textSize="12sp"
-            android:textStyle="bold" />
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/bg_edittext_rounded"
-            android:hint="Ej: Tomate"
-            android:paddingHorizontal="12dp"
-            android:textSize="14sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:text="Categoría"
-            android:textColor="@color/text_dark"
-            android:textSize="12sp"
-            android:textStyle="bold" />
-
-        <Spinner
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/bg_edittext_rounded" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:orientation="horizontal">
+            <Spinner
+                android:id="@+id/spinner_categoria_prod"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_edittext_rounded" />
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:layout_marginBottom="16dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Cantidad"
-                    android:textColor="@color/text_dark"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:background="@drawable/bg_edittext_rounded"
-                    android:hint="50"
-                    android:inputType="number"
-                    android:paddingHorizontal="12dp"
-                    android:textSize="14sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Cantidad Actual"
+                        android:textColor="@color/text_dark"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="6dp"/>
+
+                    <EditText
+                        android:id="@+id/et_cantidad_prod"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:background="@drawable/bg_edittext_rounded"
+                        android:hint="0.0"
+                        android:inputType="numberDecimal"
+                        android:paddingHorizontal="16dp"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Unidad"
+                        android:textColor="@color/text_dark"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="6dp"/>
+
+                    <Spinner
+                        android:id="@+id/spinner_unidad_prod"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:background="@drawable/bg_edittext_rounded" />
+                </LinearLayout>
             </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
+                android:text="Cantidad Mínima (Alerta)"
+                android:textColor="@color/text_dark"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/et_minimo_prod"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginBottom="32dp"
+                android:background="@drawable/bg_edittext_rounded"
+                android:hint="0.0"
+                android:inputType="numberDecimal"
+                android:paddingHorizontal="16dp"
+                android:textSize="15sp" />
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:orientation="horizontal"
+                android:weightSum="2">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Unidad"
-                    android:textColor="@color/text_dark"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
+                <Button
+                    android:id="@+id/btn_cancel_prod"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="56dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_weight="1"
+                    android:text="CANCELAR"
+                    android:textAllCaps="true"
+                    android:textColor="@color/text_gray"
+                    app:cornerRadius="12dp"
+                    app:strokeColor="@color/divider_gray" />
 
-                <Spinner
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:background="@drawable/bg_edittext_rounded" />
+                <Button
+                    android:id="@+id/btn_save_prod"
+                    android:layout_width="0dp"
+                    android:layout_height="56dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/azul_accion"
+                    android:text="GUARDAR"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    app:cornerRadius="12dp" />
             </LinearLayout>
         </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:text="Cantidad Mínima"
-            android:textColor="@color/text_dark"
-            android:textSize="12sp"
-            android:textStyle="bold" />
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginBottom="24dp"
-            android:background="@drawable/bg_edittext_rounded"
-            android:hint="20"
-            android:inputType="number"
-            android:paddingHorizontal="12dp"
-            android:textSize="14sp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/btn_cancel_prod"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="0dp"
-                android:layout_height="54dp"
-                android:layout_marginEnd="8dp"
-                android:layout_weight="1"
-                android:text="Cancelar"
-                android:textAllCaps="false"
-                android:textColor="@color/text_gray"
-                app:cornerRadius="12dp"
-                app:strokeColor="@color/divider_gray" />
-
-            <Button
-                android:id="@+id/btn_save_prod"
-                android:layout_width="0dp"
-                android:layout_height="54dp"
-                android:layout_marginStart="8dp"
-                android:layout_weight="1"
-                android:backgroundTint="@color/azul_accion"
-                android:text="Guardar Producto"
-                android:textAllCaps="false"
-                app:cornerRadius="12dp" />
-        </LinearLayout>
-    </LinearLayout>
+    </ScrollView>
 </androidx.cardview.widget.CardView>
