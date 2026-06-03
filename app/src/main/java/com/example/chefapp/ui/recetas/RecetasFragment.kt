@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -47,6 +48,17 @@ class RecetasFragment : Fragment() {
     private var isExternalNavigation = false
     private var lastCategoriesNames: List<String>? = null
 
+    private val backPressedCallback = object : OnBackPressedCallback(false) {
+        override fun handleOnBackPressed() {
+            handleBackNavigation()
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        requireActivity().onBackPressedDispatcher.addCallback(this, backPressedCallback)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -56,14 +68,7 @@ class RecetasFragment : Fragment() {
         setupRecyclerView()
         setupSearch()
         setupObservers()
-        setupFab()
         return binding.root
-    }
-
-    private fun setupFab() {
-        binding.fabNuevaReceta.setOnClickListener {
-            mainViewModel.showDialog(DialogType.NUEVA_RECETA)
-        }
     }
 
     private fun setupRecyclerView() {
@@ -84,6 +89,20 @@ class RecetasFragment : Fragment() {
         )
         binding.recyclerRecetas.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerRecetas.adapter = adapter
+    }
+
+    private fun handleBackNavigation() {
+        val transition = MaterialFadeThrough().apply { duration = 300 }
+        TransitionManager.beginDelayedTransition(binding.root as ViewGroup, transition)
+        
+        viewModel.seleccionarReceta(null)
+        
+        if (isExternalNavigation) {
+            isExternalNavigation = false
+            if (!findNavController().popBackStack()) {
+                findNavController().navigate(R.id.navigation_dashboard)
+            }
+        }
     }
 
     private fun confirmarEliminacionReceta(receta: Receta) {
@@ -114,6 +133,7 @@ class RecetasFragment : Fragment() {
                 viewModel.uiState.collect { state ->
                     actualizarUI(state)
                     actualizarChips(state.categorias)
+                    backPressedCallback.isEnabled = state.selectedReceta != null
                 }
             }
         }
@@ -143,7 +163,6 @@ class RecetasFragment : Fragment() {
         
         group.removeAllViews()
         
-        // Chip "Todas"
         val chipTodas = Chip(requireContext()).apply {
             text = "Todas"
             isCheckable = true
@@ -214,19 +233,11 @@ class RecetasFragment : Fragment() {
 
         val btnVolver = detailView.findViewById<TextView>(R.id.btn_volver)
         if (isExternalNavigation) {
-            btnVolver.text = "← Volver al pedido"
+            btnVolver.text = "← Volver"
         }
 
         btnVolver.setOnClickListener {
-            val exitTransition = MaterialFadeThrough().apply { duration = 300 }
-            TransitionManager.beginDelayedTransition(binding.root as ViewGroup, exitTransition)
-            viewModel.seleccionarReceta(null)
-            if (isExternalNavigation) {
-                isExternalNavigation = false
-                if (!findNavController().popBackStack()) {
-                    findNavController().navigate(R.id.navigation_pedidos)
-                }
-            }
+            handleBackNavigation()
         }
 
         val containerIngredientes = detailView.findViewById<LinearLayout>(R.id.container_ingredientes_lista)

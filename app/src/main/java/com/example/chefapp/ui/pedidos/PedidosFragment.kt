@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -43,6 +44,17 @@ class PedidosFragment : Fragment() {
     private val mainViewModel: MainViewModel by activityViewModels()
     private lateinit var adapter: PedidosAdapter
     private val currencyFormat = NumberFormat.getCurrencyInstance(Locale("es", "CO"))
+
+    private val backPressedCallback = object : OnBackPressedCallback(false) {
+        override fun handleOnBackPressed() {
+            viewModel.seleccionarPedido(null)
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        requireActivity().onBackPressedDispatcher.addCallback(this, backPressedCallback)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -110,6 +122,7 @@ class PedidosFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { state ->
                     actualizarUI(state)
+                    backPressedCallback.isEnabled = state.selectedPedido != null
                 }
             }
         }

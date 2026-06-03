@@ -180,17 +180,4 @@
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_nuevo_producto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="80dp"
-        android:src="@android:drawable/ic_menu_add"
-        app:backgroundTint="@color/primary_orange"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:tint="@color/white"
-        android:elevation="13dp" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

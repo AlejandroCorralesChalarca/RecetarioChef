@@ -19,8 +19,8 @@ import kotlin.math.abs
 
 data class DashboardUiState(
     val totalPedidos: Int = 0,
-    val completados: Int = 0, // En UI como "Listos"
-    val enProceso: Int = 0,   // En UI como "Preparando"
+    val completados: Int = 0,
+    val enProceso: Int = 0,
     val ingresos: String = "$0",
     val featuredRecetas: List<Receta> = emptyList(),
     val chartData: List<Float> = listOf(0f, 0f, 0f, 0f, 0f, 0f, 0f),
@@ -49,14 +49,12 @@ class DashboardViewModel : ViewModel() {
                 firebaseService.getPedidos(),
                 firebaseService.getRecetas()
             ) { pedidos, recetas ->
-                // Mapeo de estados según la lógica de la app
                 val total = pedidos.size
                 val listos = pedidos.count { it.estado == "Listo" }
                 val preparando = pedidos.count { it.estado == "Pendiente" || it.estado == "En Preparación" }
                 val finalizados = pedidos.filter { it.estado == "Finalizado" }
                 val sumaIngresos = finalizados.sumOf { it.total }
                 
-                // Carrusel: Obtener recetas más populares o las últimas 5
                 val topRecetas = findTopRecipes(pedidos, recetas)
                 val featured = if (topRecetas.isNotEmpty()) topRecetas.take(5) else recetas.take(5)
 
@@ -96,26 +94,22 @@ class DashboardViewModel : ViewModel() {
         val labels = mutableListOf<String>()
         val dateFormat = SimpleDateFormat("EEE", Locale("es", "CO"))
         
-        // Iteramos los últimos 7 días terminando en hoy
         for (i in 6 downTo 0) {
             val calendar = Calendar.getInstance()
             calendar.add(Calendar.DAY_OF_YEAR, -i)
             
-            // Inicio del día
             calendar.set(Calendar.HOUR_OF_DAY, 0)
             calendar.set(Calendar.MINUTE, 0)
             calendar.set(Calendar.SECOND, 0)
             calendar.set(Calendar.MILLISECOND, 0)
             val startOfDay = calendar.timeInMillis
             
-            // Fin del día
             calendar.set(Calendar.HOUR_OF_DAY, 23)
             calendar.set(Calendar.MINUTE, 59)
             calendar.set(Calendar.SECOND, 59)
             calendar.set(Calendar.MILLISECOND, 999)
             val endOfDay = calendar.timeInMillis
             
-            // Contamos pedidos en este rango de tiempo
             val count = pedidos.count { it.timestamp in startOfDay..endOfDay }
             
             data.add(count.toFloat())
