@@ -27,10 +27,14 @@ class RegistroActivity : AppCompatActivity() {
         binding.btnRegistrarCuenta.setOnClickListener {
             val nombre = binding.editNombreRegistro.text.toString()
             val email = binding.editEmailRegistro.text.toString()
+            val telefono = binding.editTelefonoRegistro.text.toString()
+            val restaurante = binding.editRestauranteRegistro.text.toString()
+            val direccion = binding.editDireccionRegistro.text.toString()
             val pass = binding.editPasswordRegistro.text.toString()
             
-            if (nombre.isNotEmpty() && email.isNotEmpty() && pass.isNotEmpty()) {
-                viewModel.registrar(nombre, email, pass)
+            if (nombre.isNotEmpty() && email.isNotEmpty() && pass.isNotEmpty() && 
+                telefono.isNotEmpty() && restaurante.isNotEmpty() && direccion.isNotEmpty()) {
+                viewModel.registrar(nombre, email, telefono, restaurante, direccion, pass)
             } else {
                 Toast.makeText(this, "Completa todos los campos", Toast.LENGTH_SHORT).show()
             }
@@ -52,7 +56,7 @@ class RegistroActivity : AppCompatActivity() {
                     binding.progressBarRegistro.visibility = View.GONE
                     Toast.makeText(this, "Registro exitoso", Toast.LENGTH_SHORT).show()
                     startActivity(Intent(this, MainActivity::class.java))
-                    finish()
+                    finishAffinity()
                 }
                 is RegistroViewModel.RegistroState.Error -> {
                     binding.progressBarRegistro.visibility = View.GONE

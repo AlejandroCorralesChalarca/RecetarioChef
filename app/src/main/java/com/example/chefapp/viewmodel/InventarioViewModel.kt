@@ -44,7 +44,7 @@ class InventarioViewModel : ViewModel() {
 
         InventarioUiState(
             productos = filtered,
-            categorias = categorias.filter { it.tipo == "Inventario" },
+            categorias = categorias.filter { it.tipo.uppercase() == "INVENTARIO" },
             currentCategory = category,
             searchQuery = query,
             isLoading = loading,

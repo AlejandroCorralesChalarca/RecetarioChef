@@ -23,11 +23,13 @@ import androidx.transition.TransitionManager
 import com.bumptech.glide.Glide
 import com.example.chefapp.R
 import com.example.chefapp.domain.model.Receta
+import com.example.chefapp.domain.model.Categoria
 import com.example.chefapp.databinding.FragmentRecetasBinding
 import com.example.chefapp.viewmodel.DialogType
 import com.example.chefapp.viewmodel.MainViewModel
 import com.example.chefapp.viewmodel.RecetasUiState
 import com.example.chefapp.viewmodel.RecetasViewModel
+import com.google.android.material.chip.Chip
 import com.google.android.material.transition.MaterialFadeThrough
 import kotlinx.coroutines.launch
 import java.text.NumberFormat
@@ -43,6 +45,7 @@ class RecetasFragment : Fragment() {
     private lateinit var adapter: RecetasAdapter
     
     private var isExternalNavigation = false
+    private var lastCategoriesNames: List<String>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,7 +56,14 @@ class RecetasFragment : Fragment() {
         setupRecyclerView()
         setupSearch()
         setupObservers()
+        setupFab()
         return binding.root
+    }
+
+    private fun setupFab() {
+        binding.fabNuevaReceta.setOnClickListener {
+            mainViewModel.showDialog(DialogType.NUEVA_RECETA)
+        }
     }
 
     private fun setupRecyclerView() {
@@ -103,6 +113,7 @@ class RecetasFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { state ->
                     actualizarUI(state)
+                    actualizarChips(state.categorias)
                 }
             }
         }
@@ -117,6 +128,42 @@ class RecetasFragment : Fragment() {
                     }
                 }
             }
+        }
+    }
+
+    private fun actualizarChips(categorias: List<Categoria>) {
+        val currentNames = categorias.map { it.nombre }.sorted()
+        if (lastCategoriesNames == currentNames) {
+            return
+        }
+        lastCategoriesNames = currentNames
+
+        val group = binding.chipGroupCategorias
+        val currentCategory = viewModel.uiState.value.currentCategory
+        
+        group.removeAllViews()
+        
+        // Chip "Todas"
+        val chipTodas = Chip(requireContext()).apply {
+            text = "Todas"
+            isCheckable = true
+            isChecked = currentCategory == "Todas"
+            setOnClickListener { 
+                viewModel.filtrarPorCategoria("Todas")
+            }
+        }
+        group.addView(chipTodas)
+
+        for (cat in categorias) {
+            val chip = Chip(requireContext()).apply {
+                text = cat.nombre
+                isCheckable = true
+                isChecked = currentCategory == cat.nombre
+                setOnClickListener { 
+                    viewModel.filtrarPorCategoria(cat.nombre)
+                }
+            }
+            group.addView(chip)
         }
     }
 

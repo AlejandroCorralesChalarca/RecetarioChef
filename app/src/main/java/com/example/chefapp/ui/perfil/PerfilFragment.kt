@@ -61,6 +61,9 @@ class PerfilFragment : Fragment() {
         binding.tvPerfilNombre.text = state.nombre
         binding.tvPerfilRol.text = state.rol
         binding.tvPerfilEmail.text = state.email
+        binding.tvPerfilTelefono.text = if (state.telefono.isEmpty()) "No registrado" else state.telefono
+        binding.tvPerfilRestaurante.text = if (state.restaurante.isEmpty()) "No registrado" else state.restaurante
+        binding.tvPerfilDireccion.text = if (state.direccion.isEmpty()) "No registrado" else state.direccion
     }
 
     private fun navegarALogin() {

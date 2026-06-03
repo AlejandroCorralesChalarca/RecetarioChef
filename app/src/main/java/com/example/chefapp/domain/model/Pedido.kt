@@ -12,7 +12,8 @@ data class Pedido(
     val total: Double = 0.0,
     val estado: String = "Pendiente",
     val categoria: String = "General",
-    val items: List<ItemPedido> = emptyList()
+    val items: List<ItemPedido> = emptyList(),
+    val timestamp: Long = System.currentTimeMillis()
 )
 
 @IgnoreExtraProperties
