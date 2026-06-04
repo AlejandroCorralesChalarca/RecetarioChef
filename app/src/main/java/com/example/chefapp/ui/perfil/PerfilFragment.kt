@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -14,7 +15,7 @@ import com.bumptech.glide.Glide
 import com.example.chefapp.R
 import com.example.chefapp.databinding.FragmentPerfilBinding
 import com.example.chefapp.ui.LoginActivity
-import com.example.chefapp.viewmodel.PerfilUiState
+import com.example.chefapp.ui.UiState
 import com.example.chefapp.viewmodel.PerfilViewModel
 import kotlinx.coroutines.launch
 
@@ -30,11 +31,9 @@ class PerfilFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentPerfilBinding.inflate(inflater, container, false)
-        
         setupListeners()
         setupObservers()
         cargarImagenPerfil()
-        
         return binding.root
     }
 
@@ -48,7 +47,30 @@ class PerfilFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { state ->
-                    actualizarUI(state)
+                    // Manejo de Estados de la Guía (Punto 7)
+                    binding.progressBar.visibility = if (state.info is UiState.Loading) View.VISIBLE else View.GONE
+                    
+                    when (state.info) {
+                        is UiState.Success -> {
+                            binding.tvPerfilNombre.text = state.nombre
+                            binding.tvPerfilRol.text = state.rol
+                            binding.tvPerfilEmail.text = state.email
+                            binding.tvPerfilTelefono.text = if (state.telefono.isEmpty()) "No registrado" else state.telefono
+                            binding.tvPerfilRestaurante.text = if (state.restaurante.isEmpty()) "No registrado" else state.restaurante
+                            binding.tvPerfilDireccion.text = if (state.direccion.isEmpty()) "No registrado" else state.direccion
+                        }
+                        is UiState.NoConnection -> {
+                            Toast.makeText(context, "Sin conexión a internet", Toast.LENGTH_SHORT).show()
+                        }
+                        is UiState.SessionExpired -> {
+                            navegarALogin()
+                        }
+                        is UiState.Error -> {
+                            Toast.makeText(context, (state.info as UiState.Error).message, Toast.LENGTH_SHORT).show()
+                        }
+                        else -> {}
+                    }
+
                     if (state.isLoggedOut) {
                         navegarALogin()
                     }
@@ -57,19 +79,11 @@ class PerfilFragment : Fragment() {
         }
     }
 
-    private fun actualizarUI(state: PerfilUiState) {
-        binding.tvPerfilNombre.text = state.nombre
-        binding.tvPerfilRol.text = state.rol
-        binding.tvPerfilEmail.text = state.email
-        binding.tvPerfilTelefono.text = if (state.telefono.isEmpty()) "No registrado" else state.telefono
-        binding.tvPerfilRestaurante.text = if (state.restaurante.isEmpty()) "No registrado" else state.restaurante
-        binding.tvPerfilDireccion.text = if (state.direccion.isEmpty()) "No registrado" else state.direccion
-    }
-
     private fun navegarALogin() {
         val intent = Intent(requireContext(), LoginActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
+        requireActivity().finish()
     }
 
     private fun cargarImagenPerfil() {

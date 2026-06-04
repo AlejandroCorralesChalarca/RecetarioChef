@@ -7,6 +7,7 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -17,6 +18,7 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.chefapp.R
 import com.example.chefapp.databinding.FragmentDashboardBinding
+import com.example.chefapp.ui.UiState
 import com.example.chefapp.viewmodel.DashboardViewModel
 import com.example.chefapp.viewmodel.DashboardUiState
 import com.example.chefapp.viewmodel.MainViewModel
@@ -45,30 +47,23 @@ class DashboardFragment : Fragment() {
     private val carouselHandler = Handler(Looper.getMainLooper())
     private val carouselRunnable = object : Runnable {
         override fun run() {
-            val recipes = viewModel.uiState.value.featuredRecetas
-            if (recipes.isNotEmpty()) {
-                currentRecipeIndex = (currentRecipeIndex + 1) % recipes.size
-                updateFeaturedRecipe(recipes[currentRecipeIndex])
+            val state = viewModel.uiState.value
+            if (state.featuredRecetas.isNotEmpty()) {
+                currentRecipeIndex = (currentRecipeIndex + 1) % state.featuredRecetas.size
+                updateFeaturedRecipe(state.featuredRecetas[currentRecipeIndex])
             }
             carouselHandler.postDelayed(this, 5000)
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
-        
         setupListeners()
         setupObservers()
-        
         return binding.root
     }
 
     private fun setupListeners() {
-        // Al hacer clic en el carrusel, ir al detalle de la receta
         binding.carouselCard.setOnClickListener {
             val recipes = viewModel.uiState.value.featuredRecetas
             if (recipes.isNotEmpty()) {
@@ -77,29 +72,25 @@ class DashboardFragment : Fragment() {
                 findNavController().navigate(R.id.navigation_recetas)
             }
         }
-
-        // Navegación rápida desde las estadísticas
         binding.cardStatsContainer.setOnClickListener {
             findNavController().navigate(R.id.navigation_pedidos)
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        carouselHandler.postDelayed(carouselRunnable, 5000)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        carouselHandler.removeCallbacks(carouselRunnable)
-    }
+    override fun onResume() { super.onResume(); carouselHandler.postDelayed(carouselRunnable, 5000) }
+    override fun onPause() { super.onPause(); carouselHandler.removeCallbacks(carouselRunnable) }
 
     private fun setupObservers() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { state ->
-                    if (!state.isLoading) {
+                    // Punto 7: Manejo de Cargando
+                    binding.progressBar.visibility = if (state.mainState is UiState.Loading) View.VISIBLE else View.GONE
+                    
+                    if (state.mainState is UiState.Success) {
                         actualizarUI(state)
+                    } else if (state.mainState is UiState.NoConnection) {
+                        Toast.makeText(context, "Sin conexión para actualizar estadísticas", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -111,17 +102,11 @@ class DashboardFragment : Fragment() {
         binding.tvCompletadosCount.text = state.completados.toString()
         binding.tvEnProcesoCount.text = state.enProceso.toString()
         binding.tvIngresosCount.text = state.ingresos
-        
         binding.tvPromedioSemanal.text = state.trendText
 
         if (state.featuredRecetas.isNotEmpty()) {
             updateFeaturedRecipe(state.featuredRecetas[currentRecipeIndex % state.featuredRecetas.size])
-        } else {
-            binding.tvFeaturedTitle.text = "¡Crea tu primera receta!"
-            binding.tvFeaturedDesc.text = "Tus platos destacados aparecerán aquí"
-            binding.imgFeatured.setImageResource(R.drawable.bg_gradient_card)
         }
-
         updateChart(state.chartData, state.chartLabels)
     }
 
@@ -129,67 +114,27 @@ class DashboardFragment : Fragment() {
         binding.tvFeaturedTitle.text = receta.nombre
         binding.tvFeaturedDesc.text = receta.descripcion
         binding.tvFeaturedTime.text = receta.tiempo
-        
-        try {
-            val precioVal = receta.precio.replace("[^\\d]".toRegex(), "").toDoubleOrNull() ?: 0.0
-            binding.tvFeaturedPrice.text = if (precioVal > 0) currencyFormat.format(precioVal) else "$ ${receta.precio}"
-        } catch (e: Exception) {
-            binding.tvFeaturedPrice.text = "$ ${receta.precio}"
-        }
-
-        Glide.with(this)
-            .load(receta.imageUrl)
-            .centerCrop()
-            .placeholder(R.drawable.bg_gradient_card)
-            .error(R.drawable.bg_gradient_card)
-            .into(binding.imgFeatured)
+        val precioVal = receta.precio.replace("[^\\d]".toRegex(), "").toDoubleOrNull() ?: 0.0
+        binding.tvFeaturedPrice.text = if (precioVal > 0) currencyFormat.format(precioVal) else "$ ${receta.precio}"
+        Glide.with(this).load(receta.imageUrl).centerCrop().placeholder(R.drawable.bg_gradient_card).into(binding.imgFeatured)
     }
 
     private fun updateChart(chartData: List<Float>, labels: List<String>) {
         val entries = ArrayList<Entry>()
-        chartData.forEachIndexed { index, value ->
-            entries.add(Entry(index.toFloat(), value))
-        }
-
+        chartData.forEachIndexed { index, value -> entries.add(Entry(index.toFloat(), value)) }
         val dataSet = LineDataSet(entries, "Pedidos").apply {
-            color = Color.parseColor("#F05A28")
-            setCircleColor(Color.parseColor("#F05A28"))
-            lineWidth = 3f
-            circleRadius = 5f
-            setDrawFilled(true)
-            fillColor = Color.parseColor("#FFF3E0")
-            mode = LineDataSet.Mode.CUBIC_BEZIER
-            setDrawValues(true)
-            valueTextSize = 10f
-            valueTextColor = Color.GRAY
+            color = Color.parseColor("#F05A28"); setCircleColor(Color.parseColor("#F05A28"))
+            lineWidth = 3f; circleRadius = 5f; setDrawFilled(true); fillColor = Color.parseColor("#FFF3E0")
+            mode = LineDataSet.Mode.CUBIC_BEZIER; setDrawValues(true); valueTextSize = 10f; valueTextColor = Color.GRAY
         }
-
         binding.chartPedidos.apply {
             data = LineData(dataSet)
-            description.isEnabled = false
-            legend.isEnabled = false
-            xAxis.apply {
-                position = XAxis.XAxisPosition.BOTTOM
-                setDrawGridLines(false)
-                granularity = 1f
-                valueFormatter = IndexAxisValueFormatter(labels)
-                textColor = Color.GRAY
-            }
-            axisRight.isEnabled = false
-            axisLeft.apply {
-                setDrawGridLines(true)
-                gridColor = Color.parseColor("#E9ECEF")
-                textColor = Color.GRAY
-                axisMinimum = 0f
-                granularity = 1f // Solo números enteros para cantidad de pedidos
-            }
-            animateY(1000)
-            invalidate()
+            description.isEnabled = false; legend.isEnabled = false
+            xAxis.apply { position = XAxis.XAxisPosition.BOTTOM; setDrawGridLines(false); valueFormatter = IndexAxisValueFormatter(labels) }
+            axisRight.isEnabled = false; axisLeft.apply { setDrawGridLines(true); axisMinimum = 0f; granularity = 1f }
+            animateY(1000); invalidate()
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
+    override fun onDestroyView() { super.onDestroyView(); _binding = null }
 }
