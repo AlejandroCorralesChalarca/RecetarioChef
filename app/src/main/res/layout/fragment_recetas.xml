@@ -72,7 +72,7 @@
                 android:textColor="@color/text_gray"
                 android:textSize="14sp" />
 
-            <!-- Buscador y Filtros (Igual que Inventario/Pedidos) -->
+            <!-- Buscador y Filtros -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -116,32 +116,7 @@
                         android:layout_marginTop="16dp"
                         app:singleSelection="true"
                         app:selectionRequired="true">
-
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/chip_todas"
-                            style="@style/Widget.MaterialComponents.Chip.Choice"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Todas"
-                            android:checked="true" />
-
-                        <com.google.android.material.chip.Chip
-                            style="@style/Widget.MaterialComponents.Chip.Choice"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Italiana" />
-
-                        <com.google.android.material.chip.Chip
-                            style="@style/Widget.MaterialComponents.Chip.Choice"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Aves" />
-
-                        <com.google.android.material.chip.Chip
-                            style="@style/Widget.MaterialComponents.Chip.Choice"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Postres" />
+                        <!-- Chips generados dinámicamente -->
                     </com.google.android.material.chip.ChipGroup>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>

@@ -3,100 +3,160 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blanco"
-    android:padding="32dp">
+    android:background="@color/white">
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="📝"
-            android:textSize="80sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Crear Cuenta"
-            android:textColor="@color/naranja_pastel_dark"
-            android:textSize="28sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="32dp" />
-
-        <com.google.android.material.textfield.TextInputLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Nombre completo"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:boxStrokeColor="@color/naranja_pastel_dark"
-            app:hintTextColor="@color/naranja_pastel_dark">
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="32dp">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edit_nombre_registro"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="📝"
+                android:textSize="80sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Crear Cuenta"
+                android:textColor="@color/primary_orange"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="24dp" />
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:hint="Nombre completo"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxStrokeColor="@color/primary_orange"
+                app:hintTextColor="@color/primary_orange">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:hint="Correo electrónico"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:boxStrokeColor="@color/naranja_pastel_dark"
-            app:hintTextColor="@color/naranja_pastel_dark">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_nombre_registro"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edit_email_registro"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginTop="12dp"
+                android:hint="Correo electrónico"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxStrokeColor="@color/primary_orange"
+                app:hintTextColor="@color/primary_orange">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:hint="Contraseña"
-            app:passwordToggleEnabled="true"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:boxStrokeColor="@color/naranja_pastel_dark"
-            app:hintTextColor="@color/naranja_pastel_dark">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_email_registro"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edit_password_registro"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginTop="12dp"
+                android:hint="Teléfono"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxStrokeColor="@color/primary_orange"
+                app:hintTextColor="@color/primary_orange">
 
-        <Button
-            android:id="@+id/btn_registrar_cuenta"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:backgroundTint="@color/naranja_pastel_dark"
-            android:padding="16dp"
-            android:text="Registrarme"
-            android:textAllCaps="false"
-            android:textSize="16sp"
-            app:cornerRadius="12dp" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_telefono_registro"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="phone" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:id="@+id/txt_volver_login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="¿Ya tienes cuenta? Ingresa aquí"
-            android:textColor="@color/gris_texto" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:hint="Nombre del Restaurante"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxStrokeColor="@color/primary_orange"
+                app:hintTextColor="@color/primary_orange">
 
-    </LinearLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_restaurante_registro"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapWords" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:hint="Dirección del negocio"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxStrokeColor="@color/primary_orange"
+                app:hintTextColor="@color/primary_orange">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_direccion_registro"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPostalAddress" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:hint="Contraseña"
+                app:passwordToggleEnabled="true"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxStrokeColor="@color/primary_orange"
+                app:hintTextColor="@color/primary_orange">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_password_registro"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ProgressBar
+                android:id="@+id/progressBarRegistro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:visibility="gone"
+                android:indeterminateTint="@color/primary_orange" />
+
+            <Button
+                android:id="@+id/btn_registrar_cuenta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:backgroundTint="@color/primary_orange"
+                android:padding="16dp"
+                android:text="Registrarme"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                app:cornerRadius="12dp" />
+
+            <TextView
+                android:id="@+id/txt_volver_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="¿Ya tienes cuenta? Ingresa aquí"
+                android:textColor="@color/text_gray" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

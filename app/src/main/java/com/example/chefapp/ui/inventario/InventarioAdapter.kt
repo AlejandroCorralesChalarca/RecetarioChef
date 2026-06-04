@@ -3,18 +3,18 @@ package com.example.chefapp.ui.inventario
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.chefapp.R
-import com.example.chefapp.data.model.Producto
+import com.example.chefapp.domain.model.Producto
 import com.example.chefapp.databinding.ItemProductoCardBinding
 
 class InventarioAdapter(
     private var productos: List<Producto>,
-    private val onProductoClick: (Producto) -> Unit
+    private val onProductoClick: (Producto) -> Unit,
+    private val onModifyClick: (Producto) -> Unit,
+    private val onDeleteClick: (Producto) -> Unit
 ) : RecyclerView.Adapter<InventarioAdapter.ProductoViewHolder>() {
 
     class ProductoViewHolder(val binding: ItemProductoCardBinding) : RecyclerView.ViewHolder(binding.root)
@@ -34,7 +34,6 @@ class InventarioAdapter(
         binding.tvStockMinimo.text = "${producto.stockMinimo} ${producto.unidad}"
         binding.tvEstadoBadge.text = producto.estado
 
-
         val color = when (producto.estado) {
             "Óptimo" -> Color.parseColor("#2E7D32")
             "Medio" -> Color.parseColor("#EF6C00")
@@ -51,7 +50,6 @@ class InventarioAdapter(
         binding.tvEstadoBadge.backgroundTintList = ColorStateList.valueOf(bgColor)
         binding.progressStock.progressTintList = ColorStateList.valueOf(color)
         
-
         val progreso = (producto.cantidadActual / (producto.stockMinimo * 2) * 100).toInt().coerceAtMost(100)
         binding.progressStock.progress = progreso
 
@@ -61,11 +59,11 @@ class InventarioAdapter(
             popup.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.action_modify -> {
-                        Toast.makeText(view.context, "Modificar ${producto.nombre}", Toast.LENGTH_SHORT).show()
+                        onModifyClick(producto)
                         true
                     }
                     R.id.action_delete -> {
-                        Toast.makeText(view.context, "Eliminar ${producto.nombre}", Toast.LENGTH_SHORT).show()
+                        onDeleteClick(producto)
                         true
                     }
                     else -> false

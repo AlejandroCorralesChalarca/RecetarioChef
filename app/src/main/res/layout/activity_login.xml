@@ -72,6 +72,14 @@
                 android:textColor="@color/text_dark" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:visibility="gone"
+            android:indeterminateTint="@color/primary_orange" />
+
         <Button
             android:id="@+id/btn_login"
             android:layout_width="match_parent"
@@ -95,10 +103,14 @@
             android:textSize="14sp" />
 
         <TextView
+            android:id="@+id/txt_olvido_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
+            android:padding="8dp"
             android:text="¿Olvidaste tu contraseña?"
+            android:clickable="true"
+            android:focusable="true"
             android:textColor="@color/text_gray" />
 
     </LinearLayout>

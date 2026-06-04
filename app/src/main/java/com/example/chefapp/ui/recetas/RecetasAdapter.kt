@@ -7,17 +7,18 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.chefapp.R
-import com.example.chefapp.data.model.Receta
+import com.example.chefapp.domain.model.Receta
 import java.text.NumberFormat
 import java.util.Locale
 
 class RecetasAdapter(
     private var recetas: List<Receta>,
-    private val onRecetaClick: (Receta) -> Unit
+    private val onRecetaClick: (Receta) -> Unit,
+    private val onModifyClick: (Receta) -> Unit,
+    private val onDeleteClick: (Receta) -> Unit
 ) : RecyclerView.Adapter<RecetasAdapter.RecetaViewHolder>() {
 
     private val currencyFormat = NumberFormat.getCurrencyInstance(Locale("es", "CO"))
@@ -42,9 +43,8 @@ class RecetasAdapter(
         holder.desc.text = receta.descripcion
         holder.tiempo.text = receta.tiempo
         
-        // Formatear precio a Pesos Colombianos (COP)
         try {
-            val precioLimpio = receta.precio.replace(".", "").toDouble()
+            val precioLimpio = receta.precio.replace("[^\\d]".toRegex(), "").toDouble()
             holder.precio.text = currencyFormat.format(precioLimpio)
         } catch (e: Exception) {
             holder.precio.text = "$ ${receta.precio}"
@@ -53,8 +53,8 @@ class RecetasAdapter(
         Glide.with(holder.itemView.context)
             .load(receta.imageUrl)
             .centerCrop()
-            .placeholder(R.drawable.bg_chip_selected)
-            .error(R.drawable.bg_chip_selected)
+            .placeholder(R.drawable.ic_chef_hat)
+            .error(R.drawable.ic_chef_hat)
             .into(holder.imagen)
 
         holder.btnMenu.setOnClickListener { view ->
@@ -63,11 +63,11 @@ class RecetasAdapter(
             popup.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.action_modify -> {
-                        Toast.makeText(view.context, "Modificar ${receta.nombre}", Toast.LENGTH_SHORT).show()
+                        onModifyClick(receta)
                         true
                     }
                     R.id.action_delete -> {
-                        Toast.makeText(view.context, "Eliminar ${receta.nombre}", Toast.LENGTH_SHORT).show()
+                        onDeleteClick(receta)
                         true
                     }
                     else -> false

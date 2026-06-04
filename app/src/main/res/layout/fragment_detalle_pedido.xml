@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="32dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            android:gravity="center_vertical">
+            <TextView
+                android:id="@+id/btn_volver_pedido"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="← Volver a pedidos"
+                android:textColor="@color/text_gray"
+                android:textSize="14sp"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="8dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <TextView
+                android:id="@+id/txt_estado_detalle_pedido"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pendiente"
+                android:background="@drawable/bg_chip_gray_light"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="4dp"
+                android:textSize="12sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/txt_id_detalle_pedido"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pedido #P004"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_dark"
+                android:layout_marginTop="8dp"/>
+
+            <TextView
+                android:id="@+id/txt_mesa_detalle_pedido"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mesa 3"
+                android:textSize="18sp"
+                android:textColor="@color/text_gray"
+                android:layout_marginTop="4dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp"
+                android:gravity="center">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_marginHorizontal="20dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Total" android:textSize="10sp" android:textColor="@color/text_gray"/>
+                    <TextView android:id="@+id/txt_total_detalle_pedido" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="$ 0.0" android:textStyle="bold" android:textSize="16sp" android:textColor="@color/primary_orange"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_marginHorizontal="20dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Tiempo" android:textSize="10sp" android:textColor="@color/text_gray"/>
+                    <TextView android:id="@+id/txt_tiempo_detalle_pedido" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Ahora" android:textStyle="bold" android:textSize="16sp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Platillos"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_dark"
+                android:layout_marginTop="32dp"/>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:cardCornerRadius="16dp"
+                app:cardBackgroundColor="#F8F9FB"
+                app:cardElevation="0dp">
+                <LinearLayout
+                    android:id="@+id/container_items_detalle_pedido"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp" />
+            </androidx.cardview.widget.CardView>
+
+            <Button
+                android:id="@+id/btn_accion_detalle_pedido"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="32dp"
+                android:text="Siguiente Estado"
+                android:textAllCaps="false"
+                android:textStyle="bold"
+                app:cornerRadius="12dp" />
+
+        </LinearLayout>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

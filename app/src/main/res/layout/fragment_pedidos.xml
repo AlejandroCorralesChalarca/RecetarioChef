@@ -41,6 +41,7 @@
         app:layout_constraintTop_toBottomOf="@id/header_pedidos" />
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/layout_lista_pedidos"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:clipToPadding="false"
@@ -71,7 +72,7 @@
                 android:textColor="@color/text_gray"
                 android:textSize="14sp" />
 
-            <!-- Buscador y Filtros -->
+            <!-- Buscador y Filtro de Estado -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -108,11 +109,19 @@
                             android:textSize="14sp" />
                     </LinearLayout>
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Estado:"
+                        android:layout_marginTop="12dp"
+                        android:textSize="12sp"
+                        android:textColor="@color/text_gray"/>
+
                     <com.google.android.material.chip.ChipGroup
                         android:id="@+id/chip_group_estados_pedidos"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="4dp"
                         app:singleSelection="true"
                         app:selectionRequired="true">
 
@@ -159,5 +168,14 @@
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <FrameLayout
+        android:id="@+id/detalle_pedido_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/white"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider_pedidos" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

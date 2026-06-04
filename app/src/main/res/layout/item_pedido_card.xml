@@ -6,7 +6,10 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="16dp"
     app:cardCornerRadius="16dp"
-    app:cardElevation="2dp">
+    app:cardElevation="2dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,7 +31,7 @@
                     android:id="@+id/txt_pedido_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Pedido #P004"
+                    android:text="Pedido #001"
                     android:textColor="@color/text_dark"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -43,7 +46,7 @@
                         android:id="@+id/txt_mesa_pedido"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="📍 Mesa 3"
+                        android:text="Mesa 3"
                         android:textColor="@color/text_gray"
                         android:textSize="12sp" />
 
@@ -52,11 +55,21 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
-                        android:text="🕒 Hace 14 min"
+                        android:text="14 min"
                         android:textColor="@color/text_gray"
                         android:textSize="12sp" />
                 </LinearLayout>
             </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/btn_menu_pedido"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_toEndOf="@id/layout_pedido_info"
+                android:layout_marginStart="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@android:drawable/ic_menu_more"
+                app:tint="@color/text_gray" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -69,7 +82,7 @@
                     android:id="@+id/txt_total_pedido"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="€45.50"
+                    android:text="$ 0.0"
                     android:textColor="@color/primary_orange"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -95,7 +108,7 @@
             android:background="@color/divider_gray" />
 
         <LinearLayout
-            android:id="@+id/items_container"
+            android:id="@+id/items_container_preview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" />
@@ -106,7 +119,7 @@
             android:layout_height="54dp"
             android:layout_marginTop="20dp"
             android:backgroundTint="@color/azul_accion"
-            android:text="Iniciar Preparación"
+            android:text="Estado"
             android:textAllCaps="false"
             android:textSize="15sp"
             android:textStyle="bold"

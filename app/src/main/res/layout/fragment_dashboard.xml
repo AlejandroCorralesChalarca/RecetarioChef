@@ -1,448 +1,327 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_gray">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="80dp">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-        <!-- Header -->
-        <LinearLayout
-            android:id="@+id/header_dashboard"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:padding="16dp"
-            app:layout_constraintTop_toTopOf="parent">
+            android:paddingBottom="100dp">
 
-            <ImageView
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:src="@drawable/ic_chef_hat"
-                app:tint="@color/primary_orange" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="ChefApp"
-                android:textColor="@color/text_dark"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <View
-            android:id="@+id/divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/divider_gray"
-            app:layout_constraintTop_toBottomOf="@id/header_dashboard" />
-
-        <TextView
-            android:id="@+id/tv_dashboard_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:text="Dashboard"
-            android:textColor="@color/text_dark"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/divider" />
-
-        <TextView
-            android:id="@+id/tv_dashboard_subtitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:text="Resumen y estadísticas del restaurante"
-            android:textColor="@color/text_gray"
-            android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_dashboard_title" />
-
-        <!-- Recetas Destacadas Header -->
-        <RelativeLayout
-            android:id="@+id/rl_destacadas"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:paddingHorizontal="20dp"
-            app:layout_constraintTop_toBottomOf="@id/tv_dashboard_subtitle">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Recetas Destacadas"
-                android:textColor="@color/text_dark"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:text="Ver todas >"
-                android:textColor="@color/primary_orange"
-                android:textSize="12sp" />
-        </RelativeLayout>
-
-        <!-- Featured Recipes Carousel -->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/carousel_card"
-            android:layout_width="match_parent"
-            android:layout_height="220dp"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="12dp"
-            app:cardCornerRadius="16dp"
-            app:layout_constraintTop_toBottomOf="@id/rl_destacadas">
-
-            <FrameLayout
+            <!-- Cabecera Premium -->
+            <View
+                android:id="@+id/header_bg"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="180dp"
+                android:background="@color/primary_orange"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <ImageView
-                    android:id="@+id/img_featured"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/bg_chip_selected" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/bg_gradient_card" />
+            <LinearLayout
+                android:id="@+id/header_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="24dp"
+                android:gravity="center_vertical"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="¡Hola, Chef!"
+                        android:textColor="@color/white"
+                        android:textSize="28sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Hoy es un gran día para cocinar"
+                        android:textColor="#E0E0E0"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_chef_hat"
+                    android:padding="8dp"
+                    android:background="@color/white"
+                    app:shapeAppearanceOverlay="@style/CircleImage"
+                    app:tint="@color/primary_orange" />
+            </LinearLayout>
+
+            <!-- Tarjetas de Resumen -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_stats_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="-40dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="8dp"
+                app:layout_constraintTop_toBottomOf="@id/header_bg">
+
+                <GridLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    android:columnCount="2"
+                    android:padding="8dp">
 
-                    <TextView
-                        android:id="@+id/tv_featured_category"
-                        android:layout_width="wrap_content"
+                    <!-- Pedidos Totales -->
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/bg_chip_orange"
-                        android:paddingHorizontal="12dp"
-                        android:paddingVertical="4dp"
-                        android:text="Aves"
-                        android:textColor="@color/white"
-                        android:textSize="10sp"
-                        android:textStyle="bold" />
+                        android:layout_columnWeight="1"
+                        android:orientation="vertical"
+                        android:padding="16dp"
+                        android:gravity="center">
+                        <TextView
+                            android:id="@+id/tv_total_pedidos_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="23"
+                            android:textColor="@color/text_dark"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Pedidos"
+                            android:textColor="@color/text_gray"
+                            android:textSize="12sp" />
+                    </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/tv_featured_title"
-                        android:layout_width="wrap_content"
+                    <!-- Ingresos -->
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="Pollo al Limón"
-                        android:textColor="@color/white"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
+                        android:layout_columnWeight="1"
+                        android:orientation="vertical"
+                        android:padding="16dp"
+                        android:gravity="center">
+                        <TextView
+                            android:id="@+id/tv_ingresos_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="$1.2M"
+                            android:textColor="@color/verde_accion"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Ingresos"
+                            android:textColor="@color/text_gray"
+                            android:textSize="12sp" />
+                    </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/tv_featured_desc"
-                        android:layout_width="wrap_content"
+                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/divider_gray" android:layout_columnSpan="2"/>
+
+                    <!-- En Proceso -->
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Pechuga de pollo jugosa con salsa de limón y hierbas"
-                        android:textColor="#E0E0E0"
-                        android:textSize="12sp" />
+                        android:layout_columnWeight="1"
+                        android:orientation="vertical"
+                        android:padding="16dp"
+                        android:gravity="center">
+                        <TextView
+                            android:id="@+id/tv_en_proceso_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="5"
+                            android:textColor="#F57C00"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Preparando"
+                            android:textColor="@color/text_gray"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+
+                    <!-- Completados -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_columnWeight="1"
+                        android:orientation="vertical"
+                        android:padding="16dp"
+                        android:gravity="center">
+                        <TextView
+                            android:id="@+id/tv_completados_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="18"
+                            android:textColor="#388E3C"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Listos"
+                            android:textColor="@color/text_gray"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+                </GridLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Sección de Receta Destacada -->
+            <TextView
+                android:id="@+id/tv_title_featured"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="32dp"
+                android:text="Sugerencia del día"
+                android:textColor="@color/text_dark"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/card_stats_container" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/carousel_card"
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="12dp"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="4dp"
+                app:layout_constraintTop_toBottomOf="@id/tv_title_featured">
+
+                <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent">
+                    <ImageView
+                        android:id="@+id/img_featured"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        tools:src="@tools:sample/backgrounds/scenic" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_gradient_card" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                        android:layout_gravity="bottom"
+                        android:orientation="vertical"
+                        android:padding="20dp">
 
                         <TextView
-                            android:id="@+id/tv_featured_time"
+                            android:id="@+id/tv_featured_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:drawablePadding="4dp"
-                            android:text="25 min"
+                            android:text="Pasta Carbonara Real"
                             android:textColor="@color/white"
-                            android:textSize="12sp"
-                            app:drawableStartCompat="@android:drawable/ic_menu_recent_history"
-                            app:drawableTint="@color/white" />
-
-                        <TextView
-                            android:id="@+id/tv_featured_price"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:text="$ 15.500"
-                            android:textColor="@color/white"
-                            android:textSize="12sp"
+                            android:textSize="22sp"
                             android:textStyle="bold" />
 
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:layout_weight="1" />
+                        <TextView
+                            android:id="@+id/tv_featured_desc"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="Receta original romana con guanciale"
+                            android:textColor="#DDDDDD"
+                            android:textSize="13sp" />
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-                            <View android:layout_width="6dp" android:layout_height="6dp" android:background="@drawable/dot_inactive" android:layout_margin="2dp"/>
-                            <View android:layout_width="6dp" android:layout_height="6dp" android:background="@drawable/dot_inactive" android:layout_margin="2dp"/>
-                            <View android:layout_width="6dp" android:layout_height="6dp" android:background="@drawable/dot_active" android:layout_margin="2dp"/>
-                            <View android:layout_width="6dp" android:layout_height="6dp" android:background="@drawable/dot_inactive" android:layout_margin="2dp"/>
+                            android:layout_marginTop="12dp"
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:id="@+id/tv_featured_time"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="20 min"
+                                android:textColor="@color/white"
+                                android:textSize="12sp"
+                                app:drawableStartCompat="@android:drawable/ic_menu_recent_history"
+                                android:drawablePadding="6dp"
+                                app:drawableTint="@color/white"/>
+
+                            <TextView
+                                android:id="@+id/tv_featured_price"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:text="$22.000"
+                                android:textColor="@color/white"
+                                android:textStyle="bold"
+                                android:textSize="14sp" />
                         </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
-            </FrameLayout>
-        </androidx.cardview.widget.CardView>
-
-        <!-- Resumen del día -->
-        <TextView
-            android:id="@+id/tv_resumen_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="24dp"
-            android:text="Resumen del Día"
-            android:textColor="@color/text_dark"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/carousel_card" />
-
-        <GridLayout
-            android:id="@+id/grid_stats"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="12dp"
-            android:layout_marginTop="12dp"
-            android:columnCount="2"
-            app:layout_constraintTop_toBottomOf="@id/tv_resumen_title">
-
-            <!-- Total Pedidos -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="0dp"
-                app:cardBackgroundColor="@color/card_blue">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp"
-                    android:gravity="center">
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center">
-                        <ImageView
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            android:src="@android:drawable/ic_dialog_info"
-                            app:tint="#1976D2"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="4dp"
-                            android:text="Total Pedidos"
-                            android:textColor="#1976D2"
-                            android:textSize="12sp"/>
-                    </LinearLayout>
-                    <TextView
-                        android:id="@+id/tv_total_pedidos_count"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="23"
-                        android:textColor="#0D47A1"
-                        android:textSize="24sp"
-                        android:textStyle="bold"/>
-                </LinearLayout>
+                </FrameLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Completados -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="0dp"
+            <!-- Gráfico de Ventas -->
+            <TextView
+                android:id="@+id/tv_title_chart"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="0dp"
-                app:cardBackgroundColor="@color/card_green">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp"
-                    android:gravity="center">
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center">
-                        <ImageView
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            android:src="@android:drawable/checkbox_on_background"
-                            app:tint="#388E3C"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="4dp"
-                            android:text="Completados"
-                            android:textColor="#388E3C"
-                            android:textSize="12sp"/>
-                    </LinearLayout>
-                    <TextView
-                        android:id="@+id/tv_completados_count"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="18"
-                        android:textColor="#1B5E20"
-                        android:textSize="24sp"
-                        android:textStyle="bold"/>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="32dp"
+                android:text="Actividad Semanal"
+                android:textColor="@color/text_dark"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/carousel_card" />
 
-            <!-- En Proceso -->
             <androidx.cardview.widget.CardView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="0dp"
-                app:cardBackgroundColor="@color/card_orange">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp"
-                    android:gravity="center">
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center">
-                        <ImageView
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            android:src="@android:drawable/ic_menu_recent_history"
-                            app:tint="#F57C00"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="4dp"
-                            android:text="En Proceso"
-                            android:textColor="#F57C00"
-                            android:textSize="12sp"/>
-                    </LinearLayout>
-                    <TextView
-                        android:id="@+id/tv_en_proceso_count"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="5"
-                        android:textColor="#E65100"
-                        android:textSize="24sp"
-                        android:textStyle="bold"/>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <!-- Ingresos -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="0dp"
-                app:cardBackgroundColor="@color/card_purple">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp"
-                    android:gravity="center">
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center">
-                        <ImageView
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            android:src="@android:drawable/arrow_up_float"
-                            app:tint="#7B1FA2"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="4dp"
-                            android:text="Ingresos"
-                            android:textColor="#7B1FA2"
-                            android:textSize="12sp"/>
-                    </LinearLayout>
-                    <TextView
-                        android:id="@+id/tv_ingresos_count"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="$ 1.245.500"
-                        android:textColor="#4A148C"
-                        android:textSize="24sp"
-                        android:textStyle="bold"/>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-        </GridLayout>
-
-        <!-- Pedidos de la semana -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="16dp"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="2dp"
-            app:layout_constraintTop_toBottomOf="@id/grid_stats">
-            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Pedidos de la Semana"
-                    android:textColor="@color/text_dark"
-                    android:textStyle="bold"/>
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="12dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="2dp"
+                app:layout_constraintTop_toBottomOf="@id/tv_title_chart">
 
-                <!-- Chart Area -->
-                <com.github.mikephil.charting.charts.LineChart
-                    android:id="@+id/chart_pedidos"
-                    android:layout_width="match_parent"
-                    android:layout_height="180dp"
-                    android:layout_marginTop="12dp"/>
-
-                <TextView
-                    android:id="@+id/tv_promedio_semanal"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:text="Promedio semanal: 64 pedidos/dia"
-                    android:textAlignment="center"
-                    android:textColor="@color/text_gray"
-                    android:textSize="12sp"/>
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
+                    android:orientation="vertical"
+                    android:padding="20dp">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.core.widget.NestedScrollView>
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:id="@+id/chart_pedidos"
+                        android:layout_width="match_parent"
+                        android:layout_height="180dp" />
+
+                    <TextView
+                        android:id="@+id/tv_promedio_semanal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="Tendencia de pedidos en alza (↑12%)"
+                        android:textAlignment="center"
+                        android:textColor="@color/text_gray"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

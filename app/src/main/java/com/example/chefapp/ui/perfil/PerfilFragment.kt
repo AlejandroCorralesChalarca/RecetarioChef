@@ -1,5 +1,6 @@
 package com.example.chefapp.ui.perfil
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.bumptech.glide.Glide
 import com.example.chefapp.R
 import com.example.chefapp.databinding.FragmentPerfilBinding
+import com.example.chefapp.ui.LoginActivity
+import com.example.chefapp.viewmodel.PerfilUiState
+import com.example.chefapp.viewmodel.PerfilViewModel
 import kotlinx.coroutines.launch
 
 class PerfilFragment : Fragment() {
@@ -27,29 +31,45 @@ class PerfilFragment : Fragment() {
     ): View {
         _binding = FragmentPerfilBinding.inflate(inflater, container, false)
         
+        setupListeners()
         setupObservers()
         cargarImagenPerfil()
         
         return binding.root
     }
 
-    private fun setupObservers() {
+    private fun setupListeners() {
+        binding.btnCerrarSesion.setOnClickListener {
+            viewModel.cerrarSesion()
+        }
+    }
 
+    private fun setupObservers() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { state ->
                     actualizarUI(state)
+                    if (state.isLoggedOut) {
+                        navegarALogin()
+                    }
                 }
             }
         }
     }
 
     private fun actualizarUI(state: PerfilUiState) {
-
         binding.tvPerfilNombre.text = state.nombre
         binding.tvPerfilRol.text = state.rol
         binding.tvPerfilEmail.text = state.email
+        binding.tvPerfilTelefono.text = if (state.telefono.isEmpty()) "No registrado" else state.telefono
+        binding.tvPerfilRestaurante.text = if (state.restaurante.isEmpty()) "No registrado" else state.restaurante
+        binding.tvPerfilDireccion.text = if (state.direccion.isEmpty()) "No registrado" else state.direccion
+    }
 
+    private fun navegarALogin() {
+        val intent = Intent(requireContext(), LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
     }
 
     private fun cargarImagenPerfil() {
