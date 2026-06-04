@@ -128,27 +128,57 @@ class RecetasFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collect { state ->
-                    actualizarUI(state)
-                    actualizarChips(state.categorias)
-                    backPressedCallback.isEnabled = state.selectedReceta != null
-                }
-            }
-        }
+    viewLifecycleOwner.lifecycleScope.launch {
+        viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewModel.uiState.collect { state ->
+                // RESET de vistas: Ocultamos todo antes de mostrar el estado actual
+                binding.progressBar.visibility = View.GONE
+                binding.recyclerRecetas.visibility = View.GONE
+                binding.layoutVacio.visibility = View.GONE // Asegúrate de tener este ID en tu XML
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                mainViewModel.uiState.collect { state ->
-                    state.recetaSeleccionada?.let { receta ->
-                        isExternalNavigation = true
-                        viewModel.seleccionarReceta(receta)
-                        mainViewModel.setRecetaSeleccionada(null)
+                when (state) {
+                    is UiState.Loading -> {
+                        binding.progressBar.visibility = View.VISIBLE
                     }
-                }
+                    is UiState.Success -> {
+                        binding.recyclerRecetas.visibility = View.VISIBLE
+                        adapter.updateList(state.data)
+                    }
+                    is UiState.Empty -> {
+                        binding.layoutVacio.visibility = View.VISIBLE
+                        // Puedes cambiar el texto del layout vacío dinámicamente
+                        // binding.txtVacio.text = "No se encontraron recetas"
+                    }
+                    is UiState.Error -> {
+                        Toast.makeText(requireContext(), state.message, Toast.LENGTH_LONG).show()
+                    }
+                    is UiState.NoConnection -> {
+                        AlertDialog.Builder(requireContext())
+                            .setTitle("Sin Conexión")
+                            .setMessage("No puedes ver las recetas sin internet. Revisa tu conexión.")
+                            .setPositiveButton("Reintentar") { _, _ -> viewModel.cargarDatos() }
+                            .show()
+                    }
+                    is UiState.SessionExpired -> {
+                        Toast.makeText(requireContext(), "Tu sesión ha expirado", Toast.LENGTH_SHORT).show()
+                        navegarALogin()
+                    }
+                }   
             }
         }
+    }
+    
+        // Observador para categorías (se mantiene independiente)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.categorias.collect { actualizarChips(it) }
+        }
+    }
+
+    private fun navegarALogin() {
+        val intent = Intent(requireContext(), LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        requireActivity().finish()
     }
 
     private fun actualizarChips(categorias: List<Categoria>) {

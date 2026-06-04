@@ -48,28 +48,26 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setupObservers() {
-        viewModel.loginState.observe(this) { state ->
-            when (state) {
-                is LoginViewModel.LoginState.Loading -> {
-                    binding.progressBar.visibility = View.VISIBLE
-                    binding.btnLogin.isEnabled = false
-                }
-                is LoginViewModel.LoginState.Success -> {
-                    binding.progressBar.visibility = View.GONE
-                    startActivity(Intent(this, MainActivity::class.java))
-                    finish()
-                }
-                is LoginViewModel.LoginState.Error -> {
-                    binding.progressBar.visibility = View.GONE
-                    binding.btnLogin.isEnabled = true
-                    Toast.makeText(this, state.message, Toast.LENGTH_SHORT).show()
-                }
-                is LoginViewModel.LoginState.Message -> {
-                    binding.progressBar.visibility = View.GONE
-                    binding.btnLogin.isEnabled = true
-                    Toast.makeText(this, state.message, Toast.LENGTH_LONG).show()
-                }
+    viewModel.loginState.observe(this) { state ->
+        // Bloqueamos el botón si está cargando
+        binding.btnLogin.isEnabled = state !is LoginViewModel.LoginState.Loading
+        binding.progressBar.visibility = if (state is LoginViewModel.LoginState.Loading) View.VISIBLE else View.GONE
+
+        when (state) {
+            is LoginViewModel.LoginState.Success -> {
+                startActivity(Intent(this, MainActivity::class.java))
+                finish()
             }
+            is LoginViewModel.LoginState.NoConnection -> {
+                Toast.makeText(this, "Error de red. Verifica tu conexión.", Toast.LENGTH_LONG).show()
+            }
+            is LoginViewModel.LoginState.Error -> {
+                // Aquí se cumple el requisito de mostrar error de credenciales
+                binding.editPassword.error = "Credenciales incorrectas"
+                Toast.makeText(this, state.message, Toast.LENGTH_SHORT).show()
+            }
+            else -> {}
         }
+    }
     }
 }

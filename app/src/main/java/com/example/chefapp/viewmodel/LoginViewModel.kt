@@ -7,14 +7,22 @@ import com.example.chefapp.crash.CrashReporter
 import com.google.firebase.auth.FirebaseAuth
 
 class LoginViewModel : ViewModel() {
-
-    private val auth = FirebaseAuth.getInstance()
+    private val auth = com.google.firebase.auth.FirebaseAuth.getInstance()
     private val _loginState = MutableLiveData<LoginState>()
     val loginState: LiveData<LoginState> = _loginState
 
+    sealed class LoginState {
+        object Loading : LoginState()
+        object Success : LoginState()
+        object NoConnection : LoginState()    // Punto 7
+        object SessionExpired : LoginState() // Punto 7 (No aplica en login pero sí en el flujo)
+        data class Error(val message: String) : LoginState()
+        data class Message(val message: String) : LoginState()
+    }
+
     fun onLoginClicked(email: String, pass: String) {
         if (email.isEmpty() || pass.isEmpty()) {
-            _loginState.value = LoginState.Error("Por favor, completa todos los campos")
+            _loginState.value = LoginState.Error("Campos incompletos")
             return
         }
 
@@ -25,9 +33,14 @@ class LoginViewModel : ViewModel() {
                 if (task.isSuccessful) {
                     _loginState.value = LoginState.Success
                 } else {
-                    val exception = task.exception
-                    exception?.let { CrashReporter.logError(it, "Fallo en Login para: $email") }
-                    _loginState.value = LoginState.Error(exception?.message ?: "Error al iniciar sesión")
+                    val exception = task.exception ?: Exception("Error desconocido")
+                    com.example.chefapp.crash.CrashReporter.logError(exception, "Login Fallido: $email")
+                    
+                    if (exception is com.google.firebase.FirebaseNetworkException) {
+                        _loginState.value = LoginState.NoConnection
+                    } else {
+                        _loginState.value = LoginState.Error(exception.message ?: "Error de autenticación")
+                    }
                 }
             }
     }
@@ -43,9 +56,11 @@ class LoginViewModel : ViewModel() {
         auth.sendPasswordResetEmail(email)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    _loginState.value = LoginState.Message("Se ha enviado un correo para restablecer tu contraseña")
+                    _loginState.value =
+                        LoginState.Message("Se ha enviado un correo para restablecer tu contraseña")
                 } else {
-                    _loginState.value = LoginState.Error(task.exception?.message ?: "Error al enviar el correo")
+                    _loginState.value =
+                        LoginState.Error(task.exception?.message ?: "Error al enviar el correo")
                 }
             }
     }
@@ -54,10 +69,4 @@ class LoginViewModel : ViewModel() {
         return auth.currentUser != null
     }
 
-    sealed class LoginState {
-        object Loading : LoginState()
-        object Success : LoginState()
-        data class Error(val message: String) : LoginState()
-        data class Message(val message: String) : LoginState()
-    }
 }
