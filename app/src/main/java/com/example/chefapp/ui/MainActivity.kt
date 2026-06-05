@@ -64,6 +64,21 @@ class MainActivity : AppCompatActivity() {
         setupNavigation()
         setupListeners()
         setupObservers()
+        val connectivityManager = getSystemService(android.content.Context.CONNECTIVITY_SERVICE) as android.net.ConnectivityManager
+        val networkRequest = android.net.NetworkRequest.Builder()
+            .addCapability(android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET)
+            .build()
+
+        connectivityManager.registerNetworkCallback(networkRequest, object : android.net.ConnectivityManager.NetworkCallback() {
+            override fun onAvailable(network: android.net.Network) {
+                // Podrían actualizar un estado global aquí
+            }
+            override fun onLost(network: android.net.Network) {
+                runOnUiThread {
+                Toast.makeText(applicationContext, "Sin conexión a internet. La App funcionará en modo offline (caché).", Toast.LENGTH_LONG).show()
+                }
+            }
+        })
     }
 
     private fun setupNavigation() {
