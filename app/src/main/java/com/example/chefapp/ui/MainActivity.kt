@@ -64,6 +64,21 @@ class MainActivity : AppCompatActivity() {
         setupNavigation()
         setupListeners()
         setupObservers()
+        val connectivityManager = getSystemService(android.content.Context.CONNECTIVITY_SERVICE) as android.net.ConnectivityManager
+        val networkRequest = android.net.NetworkRequest.Builder()
+            .addCapability(android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET)
+            .build()
+
+        connectivityManager.registerNetworkCallback(networkRequest, object : android.net.ConnectivityManager.NetworkCallback() {
+            override fun onAvailable(network: android.net.Network) {
+                // Podrían actualizar un estado global aquí
+            }
+            override fun onLost(network: android.net.Network) {
+                runOnUiThread {
+                Toast.makeText(applicationContext, "Sin conexión a internet. La App funcionará en modo offline (caché).", Toast.LENGTH_LONG).show()
+                }
+            }
+        })
     }
 
     private fun setupNavigation() {
@@ -92,20 +107,28 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun actualizarUI(state: com.example.chefapp.viewmodel.MainUiState) {
-        binding.layoutFabMenu.visibility = if (state.isFabMenuVisible) View.VISIBLE else View.GONE
-        binding.fabAdd.animate().rotation(if (state.isFabMenuVisible) 45f else 0f).setDuration(200).start()
-        if (state.activeDialog != null && (currentDialog == null || !currentDialog!!.isShowing)) {
-            when(state.activeDialog) {
-                DialogType.NUEVO_PEDIDO -> mostrarDialogoNuevoPedido(state.pedidoAEditar)
-                DialogType.NUEVA_RECETA -> mostrarDialogoNuevaReceta(state.recetaAEditar)
-                DialogType.NUEVO_PRODUCTO -> mostrarDialogoNuevoProducto(state.productoAEditar)
-                DialogType.GESTION_CATEGORIAS -> mostrarDialogoGestionCategorias()
-            }
-        } else if (state.activeDialog == null) {
-            currentDialog?.dismiss()
-            currentDialog = null
-        }
+    binding.layoutFabMenu.visibility = if (state.isFabMenuVisible) View.VISIBLE else View.GONE
+    binding.fabAdd.animate().rotation(if (state.isFabMenuVisible) 45f else 0f).setDuration(200).start()
+    
+    // Punto 7: Mostrar progreso global si hay una acción pesada (como subir imagen)
+    if (state.actionStatus is UiState.Loading) {
+        // Podrías mostrar un Toast o un overlay de carga
+    } else if (state.actionStatus is UiState.Error) {
+        Toast.makeText(this, (state.actionStatus as UiState.Error).message, Toast.LENGTH_SHORT).show()
     }
+
+    if (state.activeDialog != null && (currentDialog == null || !currentDialog!!.isShowing)) {
+        when(state.activeDialog) {
+            DialogType.NUEVO_PEDIDO -> mostrarDialogoNuevoPedido(state.pedidoAEditar)
+            DialogType.NUEVA_RECETA -> mostrarDialogoNuevaReceta(state.recetaAEditar)
+            DialogType.NUEVO_PRODUCTO -> mostrarDialogoNuevoProducto(state.productoAEditar)
+            DialogType.GESTION_CATEGORIAS -> mostrarDialogoGestionCategorias()
+        }
+    } else if (state.activeDialog == null) {
+        currentDialog?.dismiss()
+        currentDialog = null
+    }
+}
 
     private fun mostrarDialogoNuevoPedido(pedido: Pedido?) {
         val dialogBinding = DialogNuevoPedidoBinding.inflate(layoutInflater)

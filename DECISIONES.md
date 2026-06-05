@@ -29,3 +29,19 @@ Adaptabilidad: El buscador en Recetas se desplaza correctamente dentro del Scrol
 
 C. Comportamiento Doble Clic 
 Se verificó que al pulsar "Iniciar Preparación" en Pedidos o "Guardar" en los diálogos, el botón se deshabilita visualmente (propiedad `isEnabled = false`) hasta que el ViewModel confirma el fin del proceso, cumpliendo con la protección de concurrencia.
+
+III. Manejo de Estados de Interfaz y Errores 
+
+1. Centralización de Errores con UiState (Sealed Class)
+Decisión: Se expandió el uso de `UiState` a una Sealed Class global que contempla los 6 estados obligatorios: Loading, Success, Error, Empty, NoConnection y SessionExpired.
+Justificación: Esto permite que cada Fragment reaccione de forma atómica. Por ejemplo, si el `RecetasViewModel` detecta una lista de tamaño cero, emite `UiState.Empty`, lo que activa automáticamente el layout de "No hay recetas" en la UI, eliminando la necesidad de lógica condicional compleja en el Fragment.
+
+2. Registro de Fallos no fatales (Observabilidad)
+Decisión: Integración de `CrashReporter` (Firebase Crashlytics) dentro de los bloques `catch` de los ViewModels.
+Justificación: Cumpliendo con el Punto 10 de la guía, cada error capturado (especialmente fallos de red o de parseo de datos) se reporta a la consola de Firebase. Esto permite monitorear la salud de la App en producción sin que el usuario experimente un cierre forzado (Crash).
+
+IV. Gestión de Seguridad y Sesión 
+
+1. Validación de Sesión Activa
+Decisión: Implementación del estado `SessionExpired` mediante la verificación constante de `auth.currentUser`.
+Justificación: Si Firebase Auth invalida el token o el usuario es eliminado de la consola, el ViewModel detecta la nulidad del objeto User y emite el estado de expiración, provocando que el Fragment ejecute un `Intent` con `FLAG_ACTIVITY_CLEAR_TASK` para expulsar al usuario al Login, garantizando la seguridad de los datos.

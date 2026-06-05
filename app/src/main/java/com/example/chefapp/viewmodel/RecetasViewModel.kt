@@ -4,136 +4,127 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.chefapp.data.remote.FirebaseService
-import com.example.chefapp.domain.model.Categoria
 import com.example.chefapp.domain.model.Receta
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import com.example.chefapp.domain.model.Categoria
+import com.example.chefapp.ui.UiState
+import com.example.chefapp.crash.CrashReporter
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.FirebaseNetworkException
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-
-data class RecetasUiState(
-    val recetas: List<Receta> = emptyList(),
-    val categorias: List<Categoria> = emptyList(),
-    val isLoading: Boolean = false,
-    val currentQuery: String = "",
-    val currentCategory: String = "Todas",
-    val selectedReceta: Receta? = null,
-    val error: String? = null
-)
 
 class RecetasViewModel : ViewModel() {
 
     private val firebaseService = FirebaseService()
+    private val auth = FirebaseAuth.getInstance()
     private var todasLasRecetas = emptyList<Receta>()
 
-    private val _uiState = MutableStateFlow(RecetasUiState())
-    val uiState: StateFlow<RecetasUiState> = _uiState.asStateFlow()
+    // Estado principal para la lista (Punto 7)
+    private val _uiState = MutableStateFlow<UiState<List<Receta>>>(UiState.Loading)
+    val uiState: StateFlow<UiState<List<Receta>>> = _uiState.asStateFlow()
+
+    // Estados secundarios que ya tenías
+    private val _categorias = MutableStateFlow<List<Categoria>>(emptyList())
+    val categorias = _categorias.asStateFlow()
+
+    private val _selectedReceta = MutableStateFlow<Receta?>(null)
+    val selectedReceta = _selectedReceta.asStateFlow()
+
+    private var currentQuery = ""
+    private var currentCategory = "Todas"
 
     init {
-        cargarRecetas()
-        cargarCategorias()
+        cargarDatos()
     }
 
-    private fun cargarRecetas() {
-        viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true) }
-            firebaseService.getRecetas().collect { recetas ->
-                todasLasRecetas = recetas
-                aplicarFiltros()
-                _uiState.update { it.copy(isLoading = false) }
-            }
+    fun cargarDatos() {
+        if (auth.currentUser == null) {
+            _uiState.value = UiState.SessionExpired
+            return
         }
-    }
 
-    private fun cargarCategorias() {
         viewModelScope.launch {
-            firebaseService.getCategorias().collect { cats ->
-                val filtradas = cats.filter { it.tipo == "RECETA" }
-                _uiState.update { it.copy(categorias = filtradas) }
+            _uiState.value = UiState.Loading
+            try {
+                // Cargar Categorías
+                firebaseService.getCategorias().collect { cats ->
+                    _categorias.value = cats.filter { it.tipo == "RECETA" }
+                }
+                
+                // Cargar Recetas
+                firebaseService.getRecetas().collect { recetas ->
+                    todasLasRecetas = recetas
+                    aplicarFiltros()
+                }
+            } catch (e: Exception) {
+                manejarError(e)
             }
         }
     }
 
     fun guardarReceta(
-        docId: String = "",
-        nombre: String,
-        descripcion: String,
-        tiempo: String,
-        precio: String,
-        categoria: String,
-        ingredientes: List<Map<String, String>> = emptyList(),
-        pasos: List<String> = emptyList(),
-        imageUri: Uri?,
-        existingImageUrl: String? = null
+        docId: String = "", nombre: String, descripcion: String, tiempo: String,
+        precio: String, categoria: String, ingredientes: List<Map<String, String>>,
+        pasos: List<String>, imageUri: Uri?, existingImageUrl: String? = null
     ) {
         viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true) }
-            
-            val imageUrl = imageUri?.let { firebaseService.subirImagen(it) } ?: existingImageUrl
-            
-            val recetaParaGuardar = Receta(
-                docId = docId,
-                nombre = nombre,
-                descripcion = descripcion,
-                tiempo = tiempo,
-                precio = precio,
-                categoria = categoria,
-                imageUrl = imageUrl,
-                ingredientes = ingredientes,
-                pasos = pasos
-            )
-
-            val exito = firebaseService.guardarReceta(recetaParaGuardar)
-            if (!exito) {
-                _uiState.update { it.copy(error = "Error al guardar la receta") }
+            _uiState.value = UiState.Loading
+            try {
+                val imageUrl = imageUri?.let { firebaseService.subirImagen(it) } ?: existingImageUrl
+                val receta = Receta(docId, nombre, descripcion, tiempo, precio, categoria, imageUrl, ingredientes, pasos)
+                
+                val exito = firebaseService.guardarReceta(receta)
+                if (exito) {
+                    cargarDatos() // Recargar para confirmar éxito
+                } else {
+                    _uiState.value = UiState.Error("No se pudo guardar la receta en la base de datos")
+                }
+            } catch (e: Exception) {
+                manejarError(e)
             }
-            _uiState.update { it.copy(isLoading = false) }
         }
-    }
-
-    fun buscar(query: String) {
-        _uiState.update { it.copy(currentQuery = query) }
-        aplicarFiltros()
-    }
-
-    fun filtrarPorCategoria(categoria: String) {
-        _uiState.update { it.copy(currentCategory = categoria) }
-        aplicarFiltros()
-    }
-
-    fun seleccionarReceta(receta: Receta?) {
-        _uiState.update { it.copy(selectedReceta = receta) }
     }
 
     fun eliminarReceta(receta: Receta) {
         viewModelScope.launch {
-            val exito = firebaseService.eliminarReceta(receta.docId)
-            if (!exito) {
-                _uiState.update { it.copy(error = "Error al eliminar la receta") }
+            _uiState.value = UiState.Loading
+            try {
+                val exito = firebaseService.eliminarReceta(receta.docId)
+                if (!exito) _uiState.value = UiState.Error("Error al eliminar")
+                // El collect de getRecetas en init se encargará de actualizar la lista
+            } catch (e: Exception) {
+                manejarError(e)
             }
         }
+    }
+
+    fun buscar(query: String) {
+        currentQuery = query
+        aplicarFiltros()
+    }
+
+    fun filtrarPorCategoria(categoria: String) {
+        currentCategory = categoria
+        aplicarFiltros()
     }
 
     private fun aplicarFiltros() {
-        val state = _uiState.value
         var filtradas = todasLasRecetas
-
-        if (state.currentCategory != "Todas") {
-            filtradas = filtradas.filter { it.categoria == state.currentCategory }
+        if (currentCategory != "Todas") filtradas = filtradas.filter { it.categoria == currentCategory }
+        if (currentQuery.isNotEmpty()) filtradas = filtradas.filter { 
+            it.nombre.contains(currentQuery, ignoreCase = true) || it.descripcion.contains(currentQuery, ignoreCase = true)
         }
 
-        if (state.currentQuery.isNotEmpty()) {
-            filtradas = filtradas.filter { receta ->
-                receta.nombre.contains(state.currentQuery, ignoreCase = true) ||
-                        receta.descripcion.contains(state.currentQuery, ignoreCase = true)
-            }
-        }
-
-        _uiState.update { it.copy(recetas = filtradas) }
+        _uiState.value = if (filtradas.isEmpty()) UiState.Empty else UiState.Success(filtradas)
     }
-    
-    fun clearError() {
-        _uiState.update { it.copy(error = null) }
+
+    fun seleccionarReceta(receta: Receta?) { _selectedReceta.value = receta }
+
+    private fun manejarError(e: Exception) {
+        CrashReporter.logError(e, "Error en RecetasViewModel")
+        _uiState.value = when (e) {
+            is FirebaseNetworkException -> UiState.NoConnection
+            else -> UiState.Error(e.message ?: "Error inesperado")
+        }
     }
 }

@@ -118,15 +118,36 @@ class PedidosFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collect { state ->
-                    actualizarUI(state)
-                    backPressedCallback.isEnabled = state.selectedPedido != null
+    viewLifecycleOwner.lifecycleScope.launch {
+        viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewModel.uiState.collect { state ->
+                // Gestión de estados de lista
+                when (state) {
+                    is UiState.Loading -> binding.progressBar.visibility = View.VISIBLE
+                    is UiState.Empty -> {
+                        binding.progressBar.visibility = View.GONE
+                        binding.layoutVacio.visibility = View.VISIBLE
+                    }
+                    is UiState.Success -> {
+                        binding.progressBar.visibility = View.GONE
+                        binding.layoutVacio.visibility = View.GONE
+                        adapter.updateList(state.data)
+                        
+                        // Si hay un pedido seleccionado, la UI del detalle manda
+                        if (viewModel.selectedPedido != null) {
+                            mostrarDetallePedidoUI(viewModel.selectedPedido!!)
+                        }
+                    }
+                    is UiState.NoConnection -> {
+                        Snackbar.make(binding.root, "Modo offline: Datos locales solamente", Snackbar.LENGTH_INDEFINITE)
+                            .setAction("OK") {}.show()
+                    }
+                    else -> {} 
                 }
             }
         }
     }
+}
 
     private fun actualizarUI(state: PedidosUiState) {
         val transition = MaterialFadeThrough().apply {

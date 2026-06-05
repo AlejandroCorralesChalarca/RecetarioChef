@@ -13,8 +13,11 @@ import kotlinx.coroutines.launch
 
 data class PedidosUiState(
     val pedidos: List<Pedido> = emptyList(),
-    val categorias: List<Categoria> = emptyList(),
     val isLoading: Boolean = false,
+    val isEmpty: Boolean = false,
+    val noConnection: Boolean = false,
+    val error: String? = null
+    val categorias: List<Categoria> = emptyList(),
     val currentQuery: String = "",
     val currentEstado: String = "Todos",
     val currentCategory: String = "Todas",
@@ -36,11 +39,15 @@ class PedidosViewModel : ViewModel() {
 
     private fun cargarPedidos() {
         viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true) }
+            _uiState.update { it.copy(isLoading = true, noConnection = false) }
+            
             firebaseService.getPedidos().collect { pedidos ->
-                pedidosOriginales = pedidos
-                aplicarFiltros()
-                _uiState.update { it.copy(isLoading = false) }
+                if (pedidos.isEmpty()) {
+                    _uiState.update { it.copy(isLoading = false, isEmpty = true, pedidos = emptyList()) }
+                } else {
+                    pedidosOriginales = pedidos
+                    aplicarFiltros() // Esta función debe poner isLoading = false e isEmpty = false
+                }
             }
         }
     }
